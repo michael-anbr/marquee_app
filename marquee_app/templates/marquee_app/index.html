@@ -152,28 +152,32 @@
 <body class="bg-background text-on-background selection:bg-primary-container selection:text-on-primary-container">
 <!-- TopAppBar -->
 <header class="bg-surface-container dark:bg-surface-container text-primary dark:text-primary docked full-width top-0 sticky z-50 border-b border-outline-variant dark:border-outline-variant flat no shadows">
-<div class="flex justify-between items-center w-full px-margin-desktop max-w-7xl mx-auto h-16">
-<div class="flex items-center space-x-md">
-<span class="text-headline-md font-headline-md font-extrabold text-primary dark:text-primary tracking-tighter">Marquee</span>
-<nav class="hidden md:flex items-center space-x-md">
-<a class="text-primary font-bold border-b-2 border-primary pb-1 text-label-md font-label-md hover:text-primary transition-colors duration-200" href="#">Movies</a>
-<a class="text-on-surface-variant dark:text-on-surface-variant text-label-md font-label-md hover:text-primary transition-colors duration-200" href="#">TV Shows</a>
-<a class="text-on-surface-variant dark:text-on-surface-variant text-label-md font-label-md hover:text-primary transition-colors duration-200" href="#">People</a>
-<a class="text-on-surface-variant dark:text-on-surface-variant text-label-md font-label-md hover:text-primary transition-colors duration-200" href="#">Pro</a>
-</nav>
-</div>
-<div class="flex items-center space-x-md">
-<div class="relative hidden sm:block">
-<input class="bg-surface-container-highest border border-outline px-md py-xs rounded text-body-md font-body-md w-64 focus:outline-none focus:border-primary-container transition-all" placeholder="Search movies..." type="text"/>
-<span class="material-symbols-outlined absolute right-2 top-1.5 text-on-surface-variant">search</span>
-</div>
-<button class="flex items-center space-x-xs text-label-md font-label-md hover:text-primary transition-colors">
-<span class="material-symbols-outlined">bookmark</span>
-<span>Watchlist</span>
-</button>
-<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">person</span>
-</div>
-</div>
+    <div class="flex justify-between items-center w-full px-margin-desktop max-w-7xl mx-auto h-16 relative">
+        
+        <div class="flex items-center space-x-md z-10 basis-1/4">
+            <span class="text-headline-md font-headline-md font-extrabold text-primary dark:text-primary tracking-tighter">Marquee</span>
+            <nav class="hidden md:flex items-center space-x-md">
+                <a class="text-primary font-bold border-b-2 border-primary pb-1 text-label-md font-label-md hover:text-primary transition-colors duration-200" href="#">Movies</a>
+                <a class="text-on-surface-variant dark:text-on-surface-variant text-label-md font-label-md hover:text-primary transition-colors duration-200" href="#">People</a>
+            </nav>
+        </div>
+
+        <div class="absolute left-1/2 -translate-x-1/2 hidden sm:block w-full max-w-xs md:max-w-sm px-md">
+            <div class="relative">
+                <input class="bg-surface-container-highest border border-outline px-md py-xs rounded text-body-md font-body-md w-full focus:outline-none focus:border-primary-container transition-all" placeholder="Search movies..." type="text"/>
+                <span class="material-symbols-outlined absolute right-2 top-1.5 text-on-surface-variant">search</span>
+            </div>
+        </div>
+
+        <div class="flex items-center justify-end space-x-md z-10 basis-1/4">
+            <button class="flex items-center space-x-xs text-label-md font-label-md hover:text-primary transition-colors flex-shrink-0">
+                <span class="material-symbols-outlined">bookmark</span>
+                <span>Watchlist</span>
+            </button>
+            <span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">person</span>
+        </div>
+
+    </div>
 </header>
 <main class="max-w-7xl mx-auto pb-xl">
 <!-- Hero Carousel Section -->
@@ -187,21 +191,32 @@
         <div class="carousel-slide {% if forloop.first %}active{% else %}hidden{% endif %} absolute inset-0 w-full h-full">
             
             {% if movie.poster %}
-                <img src="{{ movie.poster.url }}" alt="{{ movie.title }}" class="w-full h-full object-cover opacity-35 absolute inset-0 z-10">
+                <img src="{{ movie.poster.url }}" alt="" class="w-full h-full object-cover opacity-20 blur-md absolute inset-0 z-0 scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-[#131313] via-transparent to-black/40 z-10"></div>
             {% endif %}
             
-           <div class="absolute bottom-12 left-8 md:left-20 z-20 text-white max-w-2xl flex flex-col gap-3">
-    <span class="text-xs tracking-widest font-bold text-[#f5c518]">TRENDING NOW</span>
-    <h1 class="font-['Chivo'] text-4xl md:text-5xl font-black drop-shadow-md">{{ movie.title }}</h1>
-    <p class="font-['Hanken_Grotesk'] text-base text-gray-300 drop-shadow line-clamp-3 leading-relaxed">{{ movie.description }}</p>
-    
-    <div class="flex gap-4 mt-2">
-        <a href="{% url 'movie_detail' movie.id %}" class="bg-[#f5c518] text-black font-semibold px-5 py-2 rounded shadow hover:bg-yellow-500 transition-colors">
-            View Details
-        </a>
-        <a href="#" class="bg-white/20 backdrop-blur-sm text-white font-semibold px-5 py-2 rounded shadow hover:bg-white/30 transition-colors">+ Watchlist</a>
-    </div>
-</div>
+            <div class="absolute inset-0 z-20 max-w-7xl mx-auto px-8 md:px-20 flex items-center gap-16">
+                
+                {% if movie.poster %}
+                    <div class="hidden md:block h-[400px] aspect-[2/3] rounded-lg overflow-hidden shadow-2xl border border-zinc-800/80 flex-shrink-0">
+                        <img src="{{ movie.poster.url }}" alt="{{ movie.title }}" class="w-full h-full object-contain bg-black">
+                    </div>
+                {% endif %}
+
+                <div class="text-white max-w-2xl flex flex-col gap-3 md:pl-12">
+                    <span class="text-xs tracking-widest font-bold text-[#f5c518]">TRENDING NOW</span>
+                    <h1 class="font-['Chivo'] text-4xl md:text-5xl font-black drop-shadow-md">{{ movie.title }}</h1>
+                    <p class="font-['Hanken_Grotesk'] text-base text-gray-300 drop-shadow line-clamp-4 leading-relaxed">{{ movie.description }}</p>
+                    
+                    <div class="flex gap-4 mt-2">
+                        <a href="{% url 'movie_detail' movie.id %}" class="bg-[#f5c518] text-black font-semibold px-5 py-2 rounded shadow hover:bg-yellow-500 transition-colors">
+                            View Details
+                        </a>
+                        <a href="#" class="bg-white/20 backdrop-blur-sm text-white font-semibold px-5 py-2 rounded shadow hover:bg-white/30 transition-colors">+ Watchlist</a>
+                    </div>
+                </div>
+
+            </div>
             
         </div>
         {% endfor %}
@@ -237,113 +252,14 @@
     {% endfor %}
 
 </div>
-<!-- Born Today Section -->
-<section class="mt-xl px-margin-desktop">
-<div class="flex items-center justify-between mb-lg border-l-4 border-primary-container pl-sm">
-<div class="flex items-center space-x-sm">
-<h2 class="text-headline-lg font-headline-lg text-on-surface">Born Today</h2>
-<span class="text-body-md font-body-md text-on-surface-variant">Celebrity birthdays on Oct 25</span>
-</div>
-<a class="text-label-md font-label-md text-primary hover:underline" href="#">See all</a>
-</div>
-<div class="flex overflow-x-auto gap-gutter pb-md hide-scrollbar">
-<!-- Celebrity 1 -->
-<div class="min-w-[140px] flex flex-col items-center space-y-sm group cursor-pointer">
-<div class="w-32 h-32 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary-container transition-all">
-<img class="w-full h-full object-cover" data-alt="Close-up portrait of a charismatic male actor with a sharp jawline and expressive eyes, lit with soft, professional studio lighting. The background is a clean, dark charcoal gray. The shot focuses on natural skin textures and high-contrast facial features, aligning with a sophisticated museum archive portrait style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkiidRwM_AzfAttbuqygjs2ctA7KfmFEC5YWfKaYiW5LFuIeSAzjZINzYkze0vjGiMN-2FgOrTHdBJJaBDJDdp-G7-wZoMWG2XC8cYES_7f93oCm9bsAL_fX_c9NpaW9u1Nea8bFxfQcrOGG1ilNqzEIpnmE7QGVAEl2hb3xBzhVkGQgVjL31J2MN-y7SE3USoXMgRh1u9iIqJgxDvmNapJwFxtH9Y2TAUHTWHNX7ipcFTrNjRbJQF9nRftsof3EGBKSP5zB2xQphb"/>
-</div>
-<div class="text-center">
-<h3 class="text-body-md font-body-md font-bold text-on-surface">Julian Vane</h3>
-<p class="text-label-sm font-label-sm text-on-surface-variant">Age 42</p>
-</div>
-</div>
-<!-- Celebrity 2 -->
-<div class="min-w-[140px] flex flex-col items-center space-y-sm group cursor-pointer">
-<div class="w-32 h-32 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary-container transition-all">
-<img class="w-full h-full object-cover" data-alt="Portrait of a renowned female director with a thoughtful expression, wearing stylish horn-rimmed glasses. The lighting is high-contrast black and white, creating an authoritative and scholarly cinematic look. The image is framed as a professional profile for a prestige film archive, focusing on character and intellectual presence." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5cet_q4SmATe9Gsm-oAPN5Bx8p4P2qI4GWRt2qR-tIHPSmO0lkQ0A3lZWvZi3kGdAeZ3fDkxa94Ay5KcoNyuWV0TZRlrJ0X5PMvw9kZ_zIJRJxM18DX9gcKUUQr1ySGLIYx1dHUlrS35akRrVkultQ1c09oeKWxIwQjnJMJRd4eQMzkeOFmFzx6U2g2WisbPkqzgzT9PKpaRaqDyKF8GVwIJ1DcAwwxvhjGLbWAXA8xBdI01eGxXmPDk8CgKwad9tjbk1O5k7werU"/>
-</div>
-<div class="text-center">
-<h3 class="text-body-md font-body-md font-bold text-on-surface">Elena Rossi</h3>
-<p class="text-label-sm font-label-sm text-on-surface-variant">Age 38</p>
-</div>
-</div>
-<!-- Celebrity 3 -->
-<div class="min-w-[140px] flex flex-col items-center space-y-sm group cursor-pointer">
-<div class="w-32 h-32 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary-container transition-all">
-<img class="w-full h-full object-cover" data-alt="Studio portrait of a young rising star actor with messy dark hair and a confident gaze. High-key lighting highlights the contours of his face against a deep black background. The style is modern and information-rich, presenting the celebrity with the reverence of a museum-quality photograph in a cinema-dark palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuvkUAuimL-h9iJCRlEPOAUMA89aqIsKkn9wtF_KX6-kYKDN08ynR4_yUGYr-TYoa-wdRpc4kNEnRzpl57_zX6QmkrV_Kz93ZF7uinS4sK1mZyCGbyJXGTdyC-j8EBEzcTN0lmeG3NgO3DQ2K8Q69Sv35EGWSOXNusWvWiUBQSmi6rhwp8uNa0XJYnXQVZi8MK0TnPBcgXjgvb9Db01RKMnYYzK8K0VbT_6QZ5St5vpFDEqkgRTXfT488EPQTFwhyvVIaw84d6YWmk"/>
-</div>
-<div class="text-center">
-<h3 class="text-body-md font-body-md font-bold text-on-surface">Marcus Thorne</h3>
-<p class="text-label-sm font-label-sm text-on-surface-variant">Age 29</p>
-</div>
-</div>
-<!-- Celebrity 4 -->
-<div class="min-w-[140px] flex flex-col items-center space-y-sm group cursor-pointer">
-<div class="w-32 h-32 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary-container transition-all">
-<img class="w-full h-full object-cover" data-alt="Detailed close-up portrait of a veteran actress with elegant features and silver-streaked hair. The lighting is soft but directional, casting subtle shadows that emphasize depth and experience. The overall aesthetic is high-contrast modern, fitting perfectly into a luxury cinematic brand identity for film enthusiasts." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0tT9QWEn54gVnBO_OXhoDDiN_erpwkjJPO1e1wJbIrBdckAxWdoBxwd5iB3YT2cZ99AP_N5w-Z0ATTFunI3nIX450aJryT-FXzosmi5nqzlRfefRuSNP5Jf53AG-z-MwnFjC0NIzfS176234NagSqylWMG6xLSy7s-KfhcnFhX-hwGvuxmmuwt23GKfWokFiX1RD1obWeP0k4n-9DM4QSsJpIwr_s5NaYLDXe9-M1Q-WGNyp6_PmjlcSwHRzeb2AXDxK8wCXYkRBr"/>
-</div>
-<div class="text-center">
-<h3 class="text-body-md font-body-md font-bold text-on-surface">Sonia Gable</h3>
-<p class="text-label-sm font-label-sm text-on-surface-variant">Age 64</p>
-</div>
-</div>
-<!-- Celebrity 5 -->
-<div class="min-w-[140px] flex flex-col items-center space-y-sm group cursor-pointer">
-<div class="w-32 h-32 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary-container transition-all">
-<img class="w-full h-full object-cover" data-alt="Portrait of a prominent film composer, seated in a dark studio with glowing sound boards in the background. The lighting is atmospheric, featuring a mix of warm amber and deep shadows. The visual style is scholarly and immersive, capturing the essence of a creator behind the cinematic magic in a cinema-dark aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBc0JX2hMi_dDLz8n2TZpCoNxU5eJTIL9Cdvbr44fUxmaMRwmWXMNdikB0BWiNDY20Sf6_DKlIlkhX8o9CHQOwF7Di-7BelNPmoEHCgayzWmbDNJ5NbIwP3a-BhQBHsYvHEypkX-ir1N5avt2xrETP8t-fjYUOp-B58vNZUvdsRl5cvVIkBy0hKKIBJKA4RwnnXg5XR0FZFURM6W1TZ-1x_K2G6NbvIzuVtJ_yyNUPVh88fUzMSHNNoIa9EMYN6TH65OTU9SDFOOZ5E"/>
-</div>
-<div class="text-center">
-<h3 class="text-body-md font-body-md font-bold text-on-surface">Lydia Chen</h3>
-<p class="text-label-sm font-label-sm text-on-surface-variant">Age 45</p>
-</div>
-</div>
-</div>
-</section>
-<!-- Explore Streaming Section -->
-<section class="mt-xl px-margin-desktop">
-<div class="flex items-center space-x-sm mb-lg border-l-4 border-primary-container pl-sm">
-<h2 class="text-headline-lg font-headline-lg text-on-surface">Explore Streaming</h2>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
-<!-- Streaming Promo Card 1 -->
-<div class="relative h-[240px] overflow-hidden group cursor-pointer">
-<img class="w-full h-full object-cover transition-transform group-hover:scale-105" data-alt="A high-density wide shot of a luxury home cinema room with a massive screen displaying a vibrant animated film. The room is dimly lit, with subtle recessed lighting illuminating shelves of film reels and archives. The aesthetic is clean, modern, and high-contrast, emphasizing a premium viewing experience in a dark mode interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDtKOiRPLe1aD96u6hc4AMkB146Vruz2wFEbRm0ymDIHBHB7xS3yj-nzFAwNdq6jyfwpBvKJzazDoj24cSGuc1bSarm51j53tk23Tb-E0HoKEO-VpoLs4UsNq_JfYabhhA_A4_e9JXvwOQJxu7-KmfC49_kZv6ENO9xGFa5gXZLURdpFQ1upj0J5ZjMK1skT9fnoeegkGJMTZOIa5B_PUp940FllgErC9CrXRCaTVBAXJ8Vi_TqS2MrtRH1AFDCsVZRLvNUxj8cJvI"/>
-<div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
-<div class="absolute bottom-md left-md">
-<h3 class="text-headline-md font-headline-md text-on-surface">Stream Top 100</h3>
-<p class="text-body-md font-body-md text-on-surface-variant">Included with your Pro subscription</p>
-</div>
-</div>
-<!-- Streaming Promo Card 2 -->
-<div class="relative h-[240px] overflow-hidden group cursor-pointer">
-<img class="w-full h-full object-cover transition-transform group-hover:scale-105" data-alt="An artistic shot of a film projector lens in a vintage cinema house, with beams of dust-filled light cutting through a dark room. The color palette is rich in golds and deep blacks, capturing the nostalgic but scholarly essence of the Cinema Archive brand. The lighting is dramatic and evocative of a high-end cinematic experience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJNZXsf6JyhBPWSl7QL7eXaye6_w2AGgyj54bL9expq_XvU7FOUX8FNb5I831STsPcf2hjOkZ2pEy7JoMDP5Yvzt4bzdKLnn9iSGNshWwGpGaGaDo83uVN__p-Fdiqd6pMmtO_pCqcGqGg01ZNA5Z5aRT3HyPtnfa1rAe16OAqo_oKIrAEr6JK0TtXwLUXj5QGzryJ-R03VKoQMgpSJMdkU2XGx5OvQXp5DT0Ubm1bjrwoBlyi4gZ31iW62dvt5WXQBuo3dgdE1Z2N"/>
-<div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
-<div class="absolute bottom-md left-md">
-<h3 class="text-headline-md font-headline-md text-on-surface">Indie Archive</h3>
-<p class="text-body-md font-body-md text-on-surface-variant">Exclusive releases this month</p>
-</div>
-</div>
-</div>
-</section>
-</main>
 <!-- Footer -->
 <footer class="bg-background dark:bg-background text-on-background dark:text-on-background full-width bottom-0 border-t border-outline-variant dark:border-outline-variant mt-xl flat no shadows">
-<div class="flex flex-col items-center w-full py-lg px-margin-desktop max-w-7xl mx-auto space-y-md">
-<div class="flex items-center space-x-lg mb-sm">
-<span class="material-symbols-outlined text-[24px] cursor-pointer hover:text-primary transition-colors">social_leaderboard</span>
-<span class="material-symbols-outlined text-[24px] cursor-pointer hover:text-primary transition-colors">public</span>
-<span class="material-symbols-outlined text-[24px] cursor-pointer hover:text-primary transition-colors">video_library</span>
-</div>
-<div class="flex flex-wrap justify-center gap-md">
-<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Help Center</a>
-<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Conditions of Use</a>
-<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
-<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Ad Choices</a>
-<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Your Ads Privacy Choices</a>
-</div>
-<div class="text-headline-sm font-headline-sm font-bold text-on-surface">Marquee</div>
-<p class="text-body-sm font-body-sm text-on-surface-variant">© 2026 Marquee Inc. All rights reserved.</p>
-</div>
+    <div class="flex flex-col items-center w-full py-lg px-margin-desktop max-w-7xl mx-auto space-y-md">
+        <div class="flex flex-col items-center text-center space-y-xs mb-sm">
+            <div class="text-headline-sm font-headline-sm font-bold text-on-surface">Marquee</div>
+            <p class="text-body-sm font-body-sm text-on-surface-variant">© 2026 Marquee Inc. All rights reserved.</p>
+        </div>
+    </div>
 </footer>
 <script>
     let currentSlideIndex = 0;
