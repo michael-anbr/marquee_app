@@ -1,14 +1,11 @@
-<h1>{{ movie.title }} ({{ movie.year }})</h1>
+<h1>{{ movie.title }}</h1>
+
+<p>({{ movie.year }})</p>
+
 <p>{{ movie.description }}</p>
 
-<h2>Reviews</h2>
-<ul>
-    {% for review in movie.reviews.all %}
-        <li>
-            <strong>{{ review.rating }}/10</strong>
-            - {{ review.text }}
-        </li>
-    {% empty %}
-        <p>No reviews yet.</p>
-    {% endfor %}
-</ul>
+{% if movie.poster %}
+    <img src="{{ movie.poster.url }}" alt="{{ movie.title }}">
+{% else %}
+    <p>No poster available</p>
+{% endif %}

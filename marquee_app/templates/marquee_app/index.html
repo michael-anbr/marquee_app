@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marquee | Home</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Chivo:wght@400;700;800&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#d1c5ac",
+                        "surface-container-low": "#1c1b1b",
+                        "on-primary-container": "#695200",
+                        "surface-container-high": "#2a2a2a",
+                        "inverse-primary": "#745b00",
+                        "surface-variant": "#353534",
+                        "secondary": "#c8c6c5",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-fixed": "#1b1b1c",
+                        "on-secondary": "#303030",
+                        "on-surface": "#e5e2e1",
+                        "surface-bright": "#393939",
+                        "on-background": "#e5e2e1",
+                        "background": "#131313",
+                        "tertiary": "#dbe7ff",
+                        "primary-fixed": "#ffe08b",
+                        "outline-variant": "#4e4633",
+                        "on-tertiary-container": "#00559f",
+                        "outline": "#9a9078",
+                        "on-error": "#690005",
+                        "inverse-surface": "#e5e2e1",
+                        "surface-container": "#201f1f",
+                        "on-secondary-container": "#b7b5b4",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "secondary-container": "#474746",
+                        "tertiary-fixed": "#d4e3ff",
+                        "secondary-fixed": "#e5e2e1",
+                        "surface-container-highest": "#353534",
+                        "primary-container": "#f5c518",
+                        "tertiary-container": "#adccff",
+                        "error-container": "#93000a",
+                        "on-tertiary": "#00315f",
+                        "on-tertiary-fixed-variant": "#004786",
+                        "on-primary-fixed-variant": "#584400",
+                        "surface-dim": "#131313",
+                        "surface": "#131313",
+                        "on-secondary-fixed-variant": "#474746",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-primary": "#3d2f00",
+                        "tertiary-fixed-dim": "#a6c8ff",
+                        "on-tertiary-fixed": "#001c3a",
+                        "primary-fixed-dim": "#f0c110",
+                        "inverse-on-surface": "#313030",
+                        "error": "#ffb4ab",
+                        "surface-tint": "#f0c110",
+                        "on-primary-fixed": "#241a00",
+                        "primary": "#ffe5a0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "20px",
+                        "sm": "16px",
+                        "xl": "64px",
+                        "lg": "40px",
+                        "md": "24px",
+                        "xs": "8px",
+                        "margin-desktop": "80px",
+                        "base": "4px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Chivo"],
+                        "headline-xl": ["Chivo"],
+                        "body-sm": ["Hanken Grotesk"],
+                        "headline-lg": ["Chivo"],
+                        "label-md": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-md": ["Chivo"],
+                        "label-sm": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "body-sm": ["14px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="bg-surface-container dark:bg-surface-container text-primary dark:text-primary docked full-width top-0 sticky z-50 border-b border-outline-variant dark:border-outline-variant flat no shadows">
+<div class="flex justify-between items-center w-full px-margin-desktop max-w-7xl mx-auto h-16">
+<div class="flex items-center space-x-md">
+<span class="text-headline-md font-headline-md font-extrabold text-primary dark:text-primary tracking-tighter">CineArchive</span>
+<nav class="hidden md:flex items-center space-x-md">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 text-label-md font-label-md hover:text-primary transition-colors duration-200" href="#">Movies</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant text-label-md font-label-md hover:text-primary transition-colors duration-200" href="#">TV Shows</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant text-label-md font-label-md hover:text-primary transition-colors duration-200" href="#">People</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant text-label-md font-label-md hover:text-primary transition-colors duration-200" href="#">Pro</a>
+</nav>
+</div>
+<div class="flex items-center space-x-md">
+<div class="relative hidden sm:block">
+<input class="bg-surface-container-highest border border-outline px-md py-xs rounded text-body-md font-body-md w-64 focus:outline-none focus:border-primary-container transition-all" placeholder="Search movies..." type="text"/>
+<span class="material-symbols-outlined absolute right-2 top-1.5 text-on-surface-variant">search</span>
+</div>
+<button class="flex items-center space-x-xs text-label-md font-label-md hover:text-primary transition-colors">
+<span class="material-symbols-outlined">bookmark</span>
+<span>Watchlist</span>
+</button>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">person</span>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto pb-xl">
+<!-- Hero Carousel Section -->
+<section class="relative w-full h-[600px] overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-background/80 via-transparent to-transparent z-10"></div>
+<img alt="" class="w-full h-full object-cover" data-alt="A cinematic wide shot from a gritty sci-fi neo-noir film featuring a futuristic city skyline at night with neon blue and gold lights reflecting in rainy streets. A mysterious protagonist in a long coat stands in the foreground, backlit by a massive holographic screen displaying complex data. The atmosphere is dense with fog and cinematic depth, emphasizing a moody, authoritative cinema dark aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQnISaE0WDbEtXIOYhjpjFfLpYQRGbyEEstmZSjjmLb4AkUsr20qsJ-gBxcmOG9-El46IwP-LrrqD4ZFMMVksksG-AnF8ZsxaAKj9DZ33PCNZ14Pr7xikFejnswFqsIFvdvXDgJIIIj007ZsxQsS4tt7ihisFOzI38F33cILL5IE-_bz7Sxho0P0RXvTSD3v0zRuHe05FI2mTFLTYHndoyi6_ukKlxCGt_cmDQbsSfZN-G-srE49YIqsRzD4J3QL9WPFQofPi2Gp8p"/>
+<div class="absolute bottom-lg left-margin-desktop z-20 flex flex-col items-start space-y-md max-w-2xl">
+<div class="flex items-center space-x-sm">
+<span class="bg-primary-container text-on-primary-container px-sm py-1 font-label-md text-label-md rounded">TRENDING NOW</span>
+<span class="text-on-surface-variant font-body-sm text-body-sm flex items-center"><span class="material-symbols-outlined mr-1 text-[18px]">calendar_today</span> Oct 12, 2024</span>
+</div>
+<h1 class="text-headline-xl font-headline-xl text-on-surface">The Last Archivist: Echoes of Eternity</h1>
+<p class="text-body-lg font-body-lg text-on-surface-variant line-clamp-2">In a world where memory is a commodity, one man discovers the final fragments of human history hidden within the ruins of the oldest cinema.</p>
+<div class="flex items-center space-x-md pt-sm">
+<button class="bg-[#F5C518] text-[#000000] font-bold px-lg py-sm rounded-lg flex items-center space-x-sm hover:scale-105 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+<span class="text-label-md font-label-md">Watch Trailer</span>
+</button>
+<button class="border border-outline bg-surface-container-high/50 text-on-surface font-bold px-lg py-sm rounded-lg flex items-center space-x-sm hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined">add</span>
+<span class="text-label-md font-label-md">Watchlist</span>
+</button>
+</div>
+</div>
+<div class="absolute bottom-md right-margin-desktop z-20 hidden md:flex space-x-xs">
+<div class="w-12 h-1 bg-primary-container"></div>
+<div class="w-12 h-1 bg-outline-variant"></div>
+<div class="w-12 h-1 bg-outline-variant"></div>
+<div class="w-12 h-1 bg-outline-variant"></div>
+</div>
+</section>
+<!-- What to Watch Section -->
+<section class="mt-xl px-margin-desktop">
+<div class="flex items-center space-x-sm mb-lg border-l-4 border-primary-container pl-sm">
+<h2 class="text-headline-lg font-headline-lg text-on-surface">What to Watch</h2>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors">chevron_right</span>
+</div>
+<div class="flex overflow-x-auto gap-gutter pb-md hide-scrollbar">
+
+    {% for movie in movies %}
+    <a href="{% url 'movie_detail' movie.pk %}">
+        <div class="min-w-[200px] bg-surface-container border border-[#333333] group cursor-pointer transition-all hover:border-primary-container">
+            <div class="relative aspect-[2/3] overflow-hidden">
+{% if movie.poster %}
+    <img class="w-full h-full object-cover" src="{{ movie.poster.url }}" alt="{{ movie.title }}">
+{% else %}
+    <div class="w-full h-full bg-surface-container-high flex items-center justify-center text-on-surface-variant text-sm">
+        No poster
+    </div>
+{% endif %}
+            </div>
+            <div class="p-md">
+                <h3 class="text-body-md font-body-md text-on-surface">{{ movie.title }}</h3>
+            </div>
+        </div>
+    </a>
+    {% empty %}
+        <p class="text-on-surface-variant">No movies found.</p>
+    {% endfor %}
+
+</div>
+<!-- Born Today Section -->
+<section class="mt-xl px-margin-desktop">
+<div class="flex items-center justify-between mb-lg border-l-4 border-primary-container pl-sm">
+<div class="flex items-center space-x-sm">
+<h2 class="text-headline-lg font-headline-lg text-on-surface">Born Today</h2>
+<span class="text-body-md font-body-md text-on-surface-variant">Celebrity birthdays on Oct 25</span>
+</div>
+<a class="text-label-md font-label-md text-primary hover:underline" href="#">See all</a>
+</div>
+<div class="flex overflow-x-auto gap-gutter pb-md hide-scrollbar">
+<!-- Celebrity 1 -->
+<div class="min-w-[140px] flex flex-col items-center space-y-sm group cursor-pointer">
+<div class="w-32 h-32 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary-container transition-all">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of a charismatic male actor with a sharp jawline and expressive eyes, lit with soft, professional studio lighting. The background is a clean, dark charcoal gray. The shot focuses on natural skin textures and high-contrast facial features, aligning with a sophisticated museum archive portrait style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkiidRwM_AzfAttbuqygjs2ctA7KfmFEC5YWfKaYiW5LFuIeSAzjZINzYkze0vjGiMN-2FgOrTHdBJJaBDJDdp-G7-wZoMWG2XC8cYES_7f93oCm9bsAL_fX_c9NpaW9u1Nea8bFxfQcrOGG1ilNqzEIpnmE7QGVAEl2hb3xBzhVkGQgVjL31J2MN-y7SE3USoXMgRh1u9iIqJgxDvmNapJwFxtH9Y2TAUHTWHNX7ipcFTrNjRbJQF9nRftsof3EGBKSP5zB2xQphb"/>
+</div>
+<div class="text-center">
+<h3 class="text-body-md font-body-md font-bold text-on-surface">Julian Vane</h3>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Age 42</p>
+</div>
+</div>
+<!-- Celebrity 2 -->
+<div class="min-w-[140px] flex flex-col items-center space-y-sm group cursor-pointer">
+<div class="w-32 h-32 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary-container transition-all">
+<img class="w-full h-full object-cover" data-alt="Portrait of a renowned female director with a thoughtful expression, wearing stylish horn-rimmed glasses. The lighting is high-contrast black and white, creating an authoritative and scholarly cinematic look. The image is framed as a professional profile for a prestige film archive, focusing on character and intellectual presence." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5cet_q4SmATe9Gsm-oAPN5Bx8p4P2qI4GWRt2qR-tIHPSmO0lkQ0A3lZWvZi3kGdAeZ3fDkxa94Ay5KcoNyuWV0TZRlrJ0X5PMvw9kZ_zIJRJxM18DX9gcKUUQr1ySGLIYx1dHUlrS35akRrVkultQ1c09oeKWxIwQjnJMJRd4eQMzkeOFmFzx6U2g2WisbPkqzgzT9PKpaRaqDyKF8GVwIJ1DcAwwxvhjGLbWAXA8xBdI01eGxXmPDk8CgKwad9tjbk1O5k7werU"/>
+</div>
+<div class="text-center">
+<h3 class="text-body-md font-body-md font-bold text-on-surface">Elena Rossi</h3>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Age 38</p>
+</div>
+</div>
+<!-- Celebrity 3 -->
+<div class="min-w-[140px] flex flex-col items-center space-y-sm group cursor-pointer">
+<div class="w-32 h-32 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary-container transition-all">
+<img class="w-full h-full object-cover" data-alt="Studio portrait of a young rising star actor with messy dark hair and a confident gaze. High-key lighting highlights the contours of his face against a deep black background. The style is modern and information-rich, presenting the celebrity with the reverence of a museum-quality photograph in a cinema-dark palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuvkUAuimL-h9iJCRlEPOAUMA89aqIsKkn9wtF_KX6-kYKDN08ynR4_yUGYr-TYoa-wdRpc4kNEnRzpl57_zX6QmkrV_Kz93ZF7uinS4sK1mZyCGbyJXGTdyC-j8EBEzcTN0lmeG3NgO3DQ2K8Q69Sv35EGWSOXNusWvWiUBQSmi6rhwp8uNa0XJYnXQVZi8MK0TnPBcgXjgvb9Db01RKMnYYzK8K0VbT_6QZ5St5vpFDEqkgRTXfT488EPQTFwhyvVIaw84d6YWmk"/>
+</div>
+<div class="text-center">
+<h3 class="text-body-md font-body-md font-bold text-on-surface">Marcus Thorne</h3>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Age 29</p>
+</div>
+</div>
+<!-- Celebrity 4 -->
+<div class="min-w-[140px] flex flex-col items-center space-y-sm group cursor-pointer">
+<div class="w-32 h-32 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary-container transition-all">
+<img class="w-full h-full object-cover" data-alt="Detailed close-up portrait of a veteran actress with elegant features and silver-streaked hair. The lighting is soft but directional, casting subtle shadows that emphasize depth and experience. The overall aesthetic is high-contrast modern, fitting perfectly into a luxury cinematic brand identity for film enthusiasts." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0tT9QWEn54gVnBO_OXhoDDiN_erpwkjJPO1e1wJbIrBdckAxWdoBxwd5iB3YT2cZ99AP_N5w-Z0ATTFunI3nIX450aJryT-FXzosmi5nqzlRfefRuSNP5Jf53AG-z-MwnFjC0NIzfS176234NagSqylWMG6xLSy7s-KfhcnFhX-hwGvuxmmuwt23GKfWokFiX1RD1obWeP0k4n-9DM4QSsJpIwr_s5NaYLDXe9-M1Q-WGNyp6_PmjlcSwHRzeb2AXDxK8wCXYkRBr"/>
+</div>
+<div class="text-center">
+<h3 class="text-body-md font-body-md font-bold text-on-surface">Sonia Gable</h3>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Age 64</p>
+</div>
+</div>
+<!-- Celebrity 5 -->
+<div class="min-w-[140px] flex flex-col items-center space-y-sm group cursor-pointer">
+<div class="w-32 h-32 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary-container transition-all">
+<img class="w-full h-full object-cover" data-alt="Portrait of a prominent film composer, seated in a dark studio with glowing sound boards in the background. The lighting is atmospheric, featuring a mix of warm amber and deep shadows. The visual style is scholarly and immersive, capturing the essence of a creator behind the cinematic magic in a cinema-dark aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBc0JX2hMi_dDLz8n2TZpCoNxU5eJTIL9Cdvbr44fUxmaMRwmWXMNdikB0BWiNDY20Sf6_DKlIlkhX8o9CHQOwF7Di-7BelNPmoEHCgayzWmbDNJ5NbIwP3a-BhQBHsYvHEypkX-ir1N5avt2xrETP8t-fjYUOp-B58vNZUvdsRl5cvVIkBy0hKKIBJKA4RwnnXg5XR0FZFURM6W1TZ-1x_K2G6NbvIzuVtJ_yyNUPVh88fUzMSHNNoIa9EMYN6TH65OTU9SDFOOZ5E"/>
+</div>
+<div class="text-center">
+<h3 class="text-body-md font-body-md font-bold text-on-surface">Lydia Chen</h3>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Age 45</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Explore Streaming Section -->
+<section class="mt-xl px-margin-desktop">
+<div class="flex items-center space-x-sm mb-lg border-l-4 border-primary-container pl-sm">
+<h2 class="text-headline-lg font-headline-lg text-on-surface">Explore Streaming</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Streaming Promo Card 1 -->
+<div class="relative h-[240px] overflow-hidden group cursor-pointer">
+<img class="w-full h-full object-cover transition-transform group-hover:scale-105" data-alt="A high-density wide shot of a luxury home cinema room with a massive screen displaying a vibrant animated film. The room is dimly lit, with subtle recessed lighting illuminating shelves of film reels and archives. The aesthetic is clean, modern, and high-contrast, emphasizing a premium viewing experience in a dark mode interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDtKOiRPLe1aD96u6hc4AMkB146Vruz2wFEbRm0ymDIHBHB7xS3yj-nzFAwNdq6jyfwpBvKJzazDoj24cSGuc1bSarm51j53tk23Tb-E0HoKEO-VpoLs4UsNq_JfYabhhA_A4_e9JXvwOQJxu7-KmfC49_kZv6ENO9xGFa5gXZLURdpFQ1upj0J5ZjMK1skT9fnoeegkGJMTZOIa5B_PUp940FllgErC9CrXRCaTVBAXJ8Vi_TqS2MrtRH1AFDCsVZRLvNUxj8cJvI"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
+<div class="absolute bottom-md left-md">
+<h3 class="text-headline-md font-headline-md text-on-surface">Stream Top 100</h3>
+<p class="text-body-md font-body-md text-on-surface-variant">Included with your Pro subscription</p>
+</div>
+</div>
+<!-- Streaming Promo Card 2 -->
+<div class="relative h-[240px] overflow-hidden group cursor-pointer">
+<img class="w-full h-full object-cover transition-transform group-hover:scale-105" data-alt="An artistic shot of a film projector lens in a vintage cinema house, with beams of dust-filled light cutting through a dark room. The color palette is rich in golds and deep blacks, capturing the nostalgic but scholarly essence of the Cinema Archive brand. The lighting is dramatic and evocative of a high-end cinematic experience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJNZXsf6JyhBPWSl7QL7eXaye6_w2AGgyj54bL9expq_XvU7FOUX8FNb5I831STsPcf2hjOkZ2pEy7JoMDP5Yvzt4bzdKLnn9iSGNshWwGpGaGaDo83uVN__p-Fdiqd6pMmtO_pCqcGqGg01ZNA5Z5aRT3HyPtnfa1rAe16OAqo_oKIrAEr6JK0TtXwLUXj5QGzryJ-R03VKoQMgpSJMdkU2XGx5OvQXp5DT0Ubm1bjrwoBlyi4gZ31iW62dvt5WXQBuo3dgdE1Z2N"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
+<div class="absolute bottom-md left-md">
+<h3 class="text-headline-md font-headline-md text-on-surface">Indie Archive</h3>
+<p class="text-body-md font-body-md text-on-surface-variant">Exclusive releases this month</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-background dark:bg-background text-on-background dark:text-on-background full-width bottom-0 border-t border-outline-variant dark:border-outline-variant mt-xl flat no shadows">
+<div class="flex flex-col items-center w-full py-lg px-margin-desktop max-w-7xl mx-auto space-y-md">
+<div class="flex items-center space-x-lg mb-sm">
+<span class="material-symbols-outlined text-[24px] cursor-pointer hover:text-primary transition-colors">social_leaderboard</span>
+<span class="material-symbols-outlined text-[24px] cursor-pointer hover:text-primary transition-colors">public</span>
+<span class="material-symbols-outlined text-[24px] cursor-pointer hover:text-primary transition-colors">video_library</span>
+</div>
+<div class="flex flex-wrap justify-center gap-md">
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Help Center</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Conditions of Use</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Ad Choices</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Your Ads Privacy Choices</a>
+</div>
+<div class="text-headline-sm font-headline-sm font-bold text-on-surface">CineArchive</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">© 2024 CineArchive Inc. All rights reserved.</p>
+</div>
+</footer>
+</body></html>
