@@ -1,7 +1,6 @@
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('marquee_app.urls')),
+    path('movie/<int:movie_id>/', views.movie_detail, name='movie_detail'),
 ]
