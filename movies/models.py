@@ -1,15 +1,22 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Person(models.Model):
     name = models.CharField(max_length=200)
-    role = models.CharField(max_length=100, blank=True)
-    character_name = models.CharField(max_length=150, blank=True)
+    photo = models.ImageField(upload_to='people/', blank=True, null=True)
 
     class Meta:
         ordering = ['name']
 
     def __str__(self):
         return self.name
+    
+    @property
+    def first_letter(self):
+        return self.name[0].upper() if self.name else '#'
     
 class MovieCast(models.Model):
     movie = models.ForeignKey('Movie', on_delete=models.CASCADE)
@@ -39,10 +46,46 @@ class Movie(models.Model):
         return f"{self.title} ({self.year})"  
 
 class Review(models.Model):
-    movie = models.ForeignKey(Movie, related_name='reviews', on_delete=models.CASCADE)
-    rating = models.PositiveSmallIntegerField()
-    text = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    movie = models.ForeignKey('Movie', on_delete=models.CASCADE, related_name='reviews')
+    content = models.TextField(max_length=1000)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['-created_at']
+
     def __str__(self):
-        return f"{self.movie.title} review"
+        return f"Review by {self.user.username} on {self.movie.title}"
+    
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField(max_length=500, blank=True)
+    profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
+    watchlist = models.ManyToManyField('Movie', blank=True, related_name='watched_by')
+
+    def __str__(self):
+        return f'{self.user.username}\'s Profile'
+    
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    if hasattr(instance, 'profile'):
+        instance.profile.save()
+    else:
+        Profile.objects.create(user=instance)
+
+class Rating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    movie = models.ForeignKey('Movie', on_delete=models.CASCADE, related_name='ratings')
+    score = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'movie') 
+
+    def __str__(self):
+        return f"{self.user.username} - {self.movie.title}: {self.score} Stars"

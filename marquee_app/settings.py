@@ -110,3 +110,4 @@ STATIC_URL = 'static/'
 
 MEDIA_ROOT = BASE_DIR / 'marquee_app' / 'media'
 MEDIA_URL = '/media/'
+LOGIN_REDIRECT_URL = 'user_profile'

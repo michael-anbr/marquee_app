@@ -1,0 +1,65 @@
+{% extends 'marquee_app/index.html' %}
+
+{% block carousel %}
+{% endblock %}
+
+{% block content %}
+<main class="max-w-7xl mx-auto pb-xl w-full px-8 md:px-20 mt-8 mb-12 flex-grow">
+    
+    <div class="border-b border-zinc-800 pb-4 mb-6">
+        <h1 class="text-[#f5c518] font-['Chivo'] text-3xl font-black tracking-wide">Industry Talent</h1>
+        <p class="text-zinc-400 text-sm mt-1 font-['Hanken_Grotesk']">Browse creators and actors alphabetically.</p>
+    </div>
+
+    {% regroup people by first_letter as letter_groups %}
+
+    <div class="flex flex-wrap gap-2 justify-center bg-zinc-900/60 p-4 rounded-lg border border-zinc-800/60 mb-10 font-['Hanken_Grotesk']">
+        {% for group in letter_groups %}
+            <a href="#letter-{{ group.grouper }}" class="w-8 h-8 flex items-center justify-center rounded font-bold text-sm text-zinc-400 bg-zinc-800/40 hover:bg-[#f5c518] hover:text-black transition-all">
+                {{ group.grouper }}
+            </a>
+        {% empty %}
+            <span class="text-zinc-600 text-sm">No directory index entries available.</span>
+        {% endfor %}
+    </div>
+
+    <div class="space-y-12">
+        {% for group in letter_groups %}
+            <div id="letter-{{ group.grouper }}" class="scroll-mt-24 border-t border-zinc-800/80 pt-6">
+                
+                <h2 class="text-[#f5c518] font-['Chivo'] text-4xl font-black mb-6 tracking-wider select-none">
+                    {{ group.grouper }}
+                </h2>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+                    {% for item in group.list %}
+                        <div class="bg-zinc-900/40 border border-zinc-800/80 rounded-lg p-5 flex flex-col items-center text-center justify-center min-h-[140px] group hover:border-[#f5c518]/50 transition-all duration-300">
+                            
+                            <div class="w-24 h-24 rounded-full bg-zinc-800 text-zinc-400 flex items-center justify-center mb-3 group-hover:bg-[#f5c518]/10 group-hover:text-[#f5c518] transition-colors">
+                                {% if item.photo %}
+                                    <img src="{{ item.photo.url }}" alt="{{ item.name }}" class="w-full h-full object-cover object-[center_25%]">
+                                {% else %}
+                                <span class="material-symbols-outlined text-xl">person</span>
+                                {% endif %}
+                            </div>
+                            
+                            <h3 class="font-bold text-white text-sm font-['Hanken_Grotesk'] line-clamp-2">
+                                {{ item.name }}
+                            </h3>
+                            
+                            {% if item.role %}
+                                <span class="text-[10px] text-zinc-400 font-bold mt-1.5 uppercase tracking-widest font-['Hanken_Grotesk'] bg-zinc-800/80 px-2 py-0.5 rounded">
+                                    {{ item.role }}
+                                </span>
+                            {% endif %}
+                            
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+        {% endfor %}
+    </div>
+    
+</main>
+{% endblock %}
