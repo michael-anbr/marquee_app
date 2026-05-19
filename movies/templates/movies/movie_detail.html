@@ -117,13 +117,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
         <div class="mt-8 border-t border-zinc-800 pt-6">
             <h2 class="text-[#f5c518] font-['Chivo'] text-xl font-bold tracking-wide mb-4">CAST</h2>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                 {% for membership in movie.moviecast_set.all %}
-                    <div class="bg-zinc-900/50 p-4 rounded-lg border border-zinc-800/60 flex flex-col justify-center items-start">
-                        <p class="font-bold text-white text-base">{{ membership.person.name }}</p> 
-                        {% if membership.character_name %}
-                            <p class="text-xs text-zinc-400 mt-1">as {{ membership.character_name }}</p>
-                        {% endif %}
+                    <div class="bg-zinc-900/50 p-4 rounded-lg border border-zinc-800/60 flex items-center gap-4">
+                        
+                        <div class="w-12 h-12 bg-zinc-800 rounded-full flex-shrink-0 flex items-center justify-center text-zinc-500 overflow-hidden border border-zinc-700">
+                            {% if membership.person.photo %}
+                                <img src="{{ membership.person.photo.url }}" alt="{{ membership.person.name }}" class="w-full h-full object-cover">
+                            {% else %}
+                                <span class="text-xs font-bold uppercase text-zinc-400">{{ membership.person.name|slice:":2" }}</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="flex flex-col justify-center">
+                            <p class="font-bold text-white text-base leading-snug">{{ membership.person.name }}</p> 
+                            {% if membership.character_name %}
+                                <p class="text-xs text-zinc-400 mt-0.5">as {{ membership.character_name }}</p>
+                            {% endif %}
+                        </div>
+
                     </div>
                 {% empty %}
                     <p class="text-zinc-500 text-sm">No cast members listed for this film.</p>
@@ -133,15 +145,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
         <div class="mt-8 border-t border-zinc-800 pt-6">
             <h2 class="text-[#f5c518] font-['Chivo'] text-xl font-bold tracking-wide mb-4">CREW</h2>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                 {% for membership in movie.moviecrew_set.all %}
-                    <div class="bg-zinc-900/30 p-4 rounded-lg border border-zinc-800/40 flex flex-col justify-center items-start">
-                        <span class="text-white font-medium text-base">{{ membership.person.name }}</span>
-                        {% if membership.role %}
-                            <span class="text-xs font-bold uppercase tracking-wider text-zinc-400 mt-1 bg-zinc-800/60 px-2 py-0.5 rounded">
-                                {{ membership.role }}
-                            </span>
-                        {% endif %}
+                    <div class="bg-zinc-900/30 p-4 rounded-lg border border-zinc-800/40 flex items-center gap-4">
+                        
+                        <div class="w-12 h-12 bg-zinc-800 rounded-full flex-shrink-0 flex items-center justify-center text-zinc-500 overflow-hidden border border-zinc-800">
+                            {% if membership.person.photo %}
+                                <img src="{{ membership.person.photo.url }}" alt="{{ membership.person.name }}" class="w-full h-full object-cover">
+                            {% else %}
+                                <span class="text-xs font-bold uppercase text-zinc-400">{{ membership.person.name|slice:":2" }}</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="flex flex-col justify-center">
+                            <span class="text-white font-medium text-base leading-snug">{{ membership.person.name }}</span>
+                            {% if membership.role %}
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-zinc-400 mt-1 bg-zinc-800/60 px-2 py-0.5 rounded self-start">
+                                    {{ membership.role }}
+                                </span>
+                            {% endif %}
+                        </div>
+
                     </div>
                 {% empty %}
                     <p class="text-zinc-500 text-sm">No crew members listed for this film.</p>
