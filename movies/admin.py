@@ -4,6 +4,7 @@ from .models import Movie, Person, MovieCrew, MovieCast
 @admin.register(Person)
 class PersonAdmin(admin.ModelAdmin):
     search_fields = ['name']
+    exclude = ('slug',)
 
 class MovieCastInline(admin.TabularInline):
     model = MovieCast

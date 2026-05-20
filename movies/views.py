@@ -67,7 +67,6 @@ def profile_view(request):
     profile = request.user.profile
 
     if request.method == 'POST':
-        # Pass request.FILES to handle profile picture uploads safely
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
@@ -125,3 +124,7 @@ def rate_movie(request, movie_id):
             return JsonResponse({'success': True, 'score': score})
         
     return JsonResponse({'success': False, 'error': 'Invalid score'}, status=400)
+
+def actor_profile(request, slug):
+    actor = get_object_or_404(Person, slug=slug)
+    return render(request, 'movies/actor_profile.html', {'actor': actor})

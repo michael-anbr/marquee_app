@@ -155,15 +155,35 @@
     <div class="flex justify-between items-center w-full px-margin-desktop max-w-7xl mx-auto h-16 relative">
         
         <div class="flex items-center space-x-md z-10 basis-1/4">    
-            <a href="{% url 'home' %}" class="text-headline-md font-headline-md font-extrabold text-primary dark:text-primary tracking-tighter hover:opacity-80 transition-opacity">Marquee</a>
+            <a href="/" class="text-headline-md font-headline-md font-extrabold text-primary dark:text-primary tracking-tighter hover:opacity-80 transition-opacity">
+                Marquee
+            </a>
+            
             <nav class="hidden md:flex items-center space-x-md">
-                <a class="text-primary font-bold border-b-2 border-primary pb-1 text-label-md font-label-md hover:text-primary transition-colors duration-200" href="{% url 'all_movies' %}">Movies</a>
-                <a class="text-on-surface-variant dark:text-on-surface-variant text-label-md font-label-md hover:text-primary transition-colors duration-200" href="{% url 'all_people' %}">People</a>
+                <a href="{% url 'movies:all_movies' %}" 
+                   class="text-label-md font-label-md transition-colors duration-200 pb-1
+                   {% if request.resolver_match.view_name == 'movies:all_movies' or request.path == '/' %}
+                       text-primary font-bold border-b-2 border-primary
+                   {% else %}
+                       text-on-surface-variant dark:text-on-surface-variant hover:text-primary
+                   {% endif %}">
+                   Movies
+                </a>
+
+                <a href="{% url 'movies:all_people' %}" 
+                   class="text-label-md font-label-md transition-colors duration-200 pb-1
+                   {% if request.resolver_match.view_name == 'movies:all_people' %}
+                       text-primary font-bold border-b-2 border-primary
+                   {% else %}
+                       text-on-surface-variant dark:text-on-surface-variant hover:text-primary
+                   {% endif %}">
+                   People
+                </a>
             </nav>
         </div>
 
         <div class="absolute left-1/2 -translate-x-1/2 hidden sm:block w-full max-w-xs md:max-w-sm px-4">
-            <form action="{% url 'all_movies' %}" method="GET" class="relative">
+            <form action="{% url 'movies:all_movies' %}" method="GET" class="relative">
                 <input 
                     class="bg-zinc-800 border border-zinc-700 px-4 py-1.5 rounded text-white text-sm w-full focus:outline-none focus:border-[#f5c518] transition-all font-['Hanken_Grotesk']" 
                     placeholder="Search movies..." 
@@ -177,18 +197,20 @@
             </form>
         </div>
 
-        <div class="hidden md:flex items-center justify-end space-x-md z-10 basis-1/4">
-            {% if user.is_authenticated %}
-                <a class="text-on-surface-variant dark:text-on-surface-variant text-label-md font-label-md hover:text-primary transition-colors duration-200" href="{% url 'user_profile' %}">Profile ({{ user.username }})</a>
-                <form action="{% url 'logout' %}" method="post" class="inline m-0 p-0 flex items-center">
-                    {% csrf_token %}
-                    <button type="submit" class="text-zinc-400 text-label-md font-label-md hover:text-red-400 transition-colors duration-200 bg-transparent border-none cursor-pointer p-0">Logout</button>
-                </form>
-            {% else %}
-                <a class="text-on-surface-variant dark:text-on-surface-variant text-label-md font-label-md hover:text-primary transition-colors duration-200" href="{% url 'login' %}">Login</a>
-                <a class="bg-[#f5c518] text-black px-3 py-1 rounded font-bold text-label-md hover:bg-[#dfb311] transition-colors duration-200" href="{% url 'register' %}">Register</a>
-            {% endif %}
-        </div>
+<div class="hidden md:flex items-center justify-end space-x-md z-10 basis-1/4">
+    {% if user.is_authenticated %}
+        <a class="text-on-surface-variant dark:text-on-surface-variant text-label-md font-label-md hover:text-primary transition-colors duration-200" href="{% url 'movies:user_profile' %}">Profile ({{ user.username }})</a>
+        
+        <form action="{% url 'movies:logout' %}" method="post" class="inline m-0 p-0 flex items-center">
+            {% csrf_token %}
+            <button type="submit" class="text-zinc-400 text-label-md font-label-md hover:text-red-400 transition-colors duration-200 bg-transparent border-none cursor-pointer p-0">Logout</button>
+        </form>
+    {% else %}
+        <a class="text-on-surface-variant dark:text-on-surface-variant text-label-md font-label-md hover:text-primary transition-colors duration-200" href="{% url 'movies:login' %}">Login</a>
+        
+        <a class="bg-[#f5c518] text-black px-3 py-1 rounded font-bold text-label-md hover:bg-[#dfb311] transition-colors duration-200" href="{% url 'movies:register' %}">Register</a>
+    {% endif %}
+</div>
 
     </div>
 </header>
@@ -223,11 +245,11 @@
         <p class="font-['Hanken_Grotesk'] text-base text-gray-300 drop-shadow line-clamp-4 leading-relaxed min-h-[6ch]">{{ movie.description }}</p>
         
         <div class="flex gap-4 mt-2">
-            <a href="{% url 'movie_detail' movie.id %}" class="bg-[#f5c518] text-black font-semibold px-5 py-2 rounded shadow hover:bg-yellow-500 transition-colors">
+            <a href="{% url 'movies:movie_detail' movie.id %}" class="bg-[#f5c518] text-black font-semibold px-5 py-2 rounded shadow hover:bg-yellow-500 transition-colors">
                 View Details
             </a>
 {% if user.is_authenticated %}
-    <a href="{% url 'toggle_watchlist' movie.id %}" 
+    <a href="{% url 'movies:toggle_watchlist' movie.id %}" 
        data-id="{{ movie.id }}" 
        class="watchlist-btn bg-white/20 backdrop-blur-sm text-white font-semibold px-5 py-2 rounded shadow hover:bg-white/30 transition-colors">
         {% if movie in user.profile.watchlist.all %}
@@ -237,7 +259,7 @@
         {% endif %}
     </a>
 {% else %}
-    <a href="{% url 'login' %}" class="bg-white/20 backdrop-blur-sm text-white font-semibold px-5 py-2 rounded shadow hover:bg-white/30 transition-colors">
+    <a href="{% url 'movies:login' %}" class="bg-white/20 backdrop-blur-sm text-white font-semibold px-5 py-2 rounded shadow hover:bg-white/30 transition-colors">
         + Watchlist
     </a>
 {% endif %}
@@ -254,6 +276,8 @@
 
 {% block content %}
 {% endblock %}
+
+</main>
 
 <!-- Footer -->
 <footer class="bg-background dark:bg-background text-on-background dark:text-on-background full-width bottom-0 border-t border-outline-variant dark:border-outline-variant mt-xl flat no shadows">

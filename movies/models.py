@@ -3,10 +3,14 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils.text import slugify
 
 class Person(models.Model):
     name = models.CharField(max_length=200)
     photo = models.ImageField(upload_to='people/', blank=True, null=True)
+    bio = models.TextField(blank=True, null=True)
+    has_profile = models.BooleanField(default=False)
+    slug = models.SlugField(max_length=250, unique=True, blank=True, null=True)
 
     class Meta:
         ordering = ['name']
@@ -18,6 +22,11 @@ class Person(models.Model):
     def first_letter(self):
         return self.name[0].upper() if self.name else '#'
     
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
 class MovieCast(models.Model):
     movie = models.ForeignKey('Movie', on_delete=models.CASCADE)
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
