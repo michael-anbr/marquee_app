@@ -19,4 +19,11 @@ urlpatterns = [
     path('review/<int:review_id>/delete/', views.delete_review, name='delete_review'),
     path('profile/change-username/', views.change_username, name='change_username'),
     path('profile/delete-account/', views.delete_account, name='delete_account'),
+    path('profile/password/', auth_views.PasswordChangeView.as_view(
+        template_name='movies/change_password.html',
+        success_url='/movies/profile/password/done/'
+    ), name='change_password'),
+    path('profile/password/done/', auth_views.PasswordChangeDoneView.as_view(
+        template_name='movies/change_password_done.html'
+    ), name='password_change_done'),
 ]

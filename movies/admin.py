@@ -3,8 +3,8 @@ from .models import Movie, Person, MovieCrew, MovieCast
 
 @admin.register(Person)
 class PersonAdmin(admin.ModelAdmin):
-    search_fields = ['name']
-    exclude = ('slug',)
+    search_fields = ['name']    
+    prepopulated_fields = {'slug': ('name',)}
 
 class MovieCastInline(admin.TabularInline):
     model = MovieCast

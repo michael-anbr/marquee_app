@@ -32,6 +32,8 @@
                     {% if request.user == profile.user %}
                         <a href="{% url 'movies:change_username' %}" class="text-zinc-500 hover:text-[#f5c518] transition-colors">Change Username</a>
                         <span class="text-zinc-800">|</span>
+                        <a href="{% url 'movies:change_password' %}" class="text-zinc-500 hover:text-[#f5c518] transition-colors">Change Password</a>
+                        <span class="text-zinc-800">|</span>
                     {% endif %}
                     
                     <button id="edit-bio-btn" class="text-[#f5c518] hover:underline focus:outline-none">
