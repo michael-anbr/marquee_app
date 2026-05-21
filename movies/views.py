@@ -4,9 +4,11 @@ import json
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from .models import Movie, Person, Rating, Review
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login
-from .forms import RegisterForm, ReviewForm, ProfileForm
+from django.contrib.auth import login, logout
+from django.http import HttpResponseForbidden
+from .forms import RegisterForm, ReviewForm, ProfileForm, ChangeUsernameForm
 
 def movie_detail(request, movie_id):
     movie = get_object_or_404(
@@ -21,7 +23,7 @@ def movie_detail(request, movie_id):
             review.user = request.user
             review.movie = movie
             review.save()
-            return redirect('movie_detail', movie_id=movie.id)
+            return redirect('movies:movie_detail', movie_id=movie.id)
     else:
         form = ReviewForm()
     
@@ -70,7 +72,7 @@ def profile_view(request):
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
-            return redirect('user_profile')
+            return redirect('movies:user_profile')
     else:
         form = ProfileForm(instance=profile)
 
@@ -128,3 +130,58 @@ def rate_movie(request, movie_id):
 def actor_profile(request, slug):
     actor = get_object_or_404(Person, slug=slug)
     return render(request, 'movies/actor_profile.html', {'actor': actor})
+
+@login_required
+def edit_review(request, review_id):
+    review = get_object_or_404(Review, id=review_id)
+    
+    if review.user != request.user:
+        return HttpResponseForbidden("You are not allowed to edit this review.")
+        
+    if request.method == 'POST':
+        form = ReviewForm(request.POST, instance=review)
+        if form.is_valid():
+            form.save()
+            return redirect('movies:movie_detail', movie_id=review.movie.id)
+    else:
+        form = ReviewForm(instance=review)
+        
+    return render(request, 'movies/edit_review.html', {'form': form, 'review': review})
+
+@login_required
+def delete_review(request, review_id):
+    review = get_object_or_404(Review, id=review_id)
+    
+    if review.user != request.user:
+        return HttpResponseForbidden("You are not allowed to delete this review.")
+        
+    if request.method == 'POST':
+        movie_id = review.movie.id
+        review.delete()
+        return redirect('movies:movie_detail', movie_id=movie_id)
+        
+    return render(request, 'movies/confirm_delete_review.html', {'review': review})
+
+@login_required
+def change_username(request):
+    if request.method == 'POST':
+        form = ChangeUsernameForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your username has been updated successfully!")
+            return redirect('movies:user_profile')
+    else:
+        form = ChangeUsernameForm(instance=request.user)
+    
+    return render(request, 'movies/change_username.html', {'form': form})
+
+@login_required
+def delete_account(request):
+    if request.method == 'POST':
+        user = request.user
+        logout(request)
+        user.delete()
+        messages.success(request, "Your account has been permanently deleted.")
+        return redirect('movies:all_movies')
+    
+    return render(request, 'movies/confirm_delete_account.html')

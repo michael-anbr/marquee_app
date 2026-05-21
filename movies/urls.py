@@ -15,4 +15,8 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(next_page='movies:all_movies'), name='logout'),
     path('movie/<int:movie_id>/watchlist/', views.toggle_watchlist, name='toggle_watchlist'),
     path('movie/<int:movie_id>/rate/', views.rate_movie, name='rate_movie'),
+    path('review/<int:review_id>/edit/', views.edit_review, name='edit_review'),
+    path('review/<int:review_id>/delete/', views.delete_review, name='delete_review'),
+    path('profile/change-username/', views.change_username, name='change_username'),
+    path('profile/delete-account/', views.delete_account, name='delete_account'),
 ]
