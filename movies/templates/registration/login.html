@@ -1,10 +1,20 @@
-<body class="bg-[#131313] text-white min-h-screen flex items-center justify-center p-6">
-    <div class="max-w-md w-full bg-[#1c1b1b] rounded-xl p-8 border border-zinc-800 shadow-2xl">
-        <h2 class="text-2xl font-black text-[#f5c518] mb-6 uppercase tracking-wide">Login to Marquee</h2>
-        <form method="post" class="flex flex-col gap-4">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="w-full bg-[#f5c518] text-black font-bold py-2 rounded mt-2 hover:bg-[#dfb311] transition-colors">Sign In</button>
-        </form>
-    </div>
+<body
+  class="bg-[#131313] text-white min-h-screen flex items-center justify-center p-6"
+>
+  <div
+    class="max-w-md w-full bg-[#1c1b1b] rounded-xl p-8 border border-zinc-800 shadow-2xl"
+  >
+    <h2 class="text-2xl font-black text-[#f5c518] mb-6 uppercase tracking-wide">
+      Login to Marquee
+    </h2>
+    <form method="post" class="flex flex-col gap-4">
+      {% csrf_token %} {{ form.as_p }}
+      <button
+        type="submit"
+        class="w-full bg-[#f5c518] text-black font-bold py-2 rounded mt-2 hover:bg-[#dfb311] transition-colors"
+      >
+        Sign In
+      </button>
+    </form>
+  </div>
 </body>

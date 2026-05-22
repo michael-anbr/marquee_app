@@ -1,138 +1,208 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Marquee | {{ profile.user.username }}'s Profile</title>
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-[#131313] text-white min-h-screen p-6 flex flex-col items-center">
-
-    <div class="max-w-4xl w-full bg-[#1c1b1b] rounded-xl overflow-hidden shadow-2xl p-8 border border-zinc-800 mt-10">
-        
-        <div class="flex flex-col sm:flex-row items-center gap-6 pb-6 border-b border-zinc-800">
-            <div class="w-24 h-24 bg-zinc-800 rounded-full flex-shrink-0 flex items-center justify-center text-zinc-500 overflow-hidden border-2 border-[#f5c518]">
-                {% if profile.profile_picture %}
-                    <img src="{{ profile.profile_picture.url }}" alt="Avatar" class="w-full h-full object-cover">
-                {% else %}
-                    <span class="text-4xl font-bold uppercase text-[#f5c518]">{{ profile.user.username|slice:":1" }}</span>
-                {% endif %}
-            </div>
-            
-            <div class="text-center sm:text-left">
-                <h1 class="text-3xl font-black text-[#f5c518] font-['Chivo']">{{ profile.user.username }}</h1>
-                <p class="text-zinc-400 text-sm mt-1">Member since {{ profile.user.date_joined|date:"F Y" }}</p>
-            </div>
+  </head>
+  <body
+    class="bg-[#131313] text-white min-h-screen p-6 flex flex-col items-center"
+  >
+    <div
+      class="max-w-4xl w-full bg-[#1c1b1b] rounded-xl overflow-hidden shadow-2xl p-8 border border-zinc-800 mt-10"
+    >
+      <div
+        class="flex flex-col sm:flex-row items-center gap-6 pb-6 border-b border-zinc-800"
+      >
+        <div
+          class="w-24 h-24 bg-zinc-800 rounded-full flex-shrink-0 flex items-center justify-center text-zinc-500 overflow-hidden border-2 border-[#f5c518]"
+        >
+          {% if profile.profile_picture %}
+          <img
+            src="{{ profile.profile_picture.url }}"
+            alt="Avatar"
+            class="w-full h-full object-cover"
+          />
+          {% else %}
+          <span class="text-4xl font-bold uppercase text-[#f5c518]"
+            >{{ profile.user.username|slice:":1" }}</span
+          >
+          {% endif %}
         </div>
 
-        <div class="mt-6">
-            <div class="flex justify-between items-center mb-2">
-                <h2 class="text-lg font-bold uppercase tracking-wider text-zinc-400">About Me</h2>
-                
-                <div class="flex items-center gap-3 text-xs font-semibold">
-                    {% if request.user == profile.user %}
-                        <a href="{% url 'movies:change_username' %}" class="text-zinc-500 hover:text-[#f5c518] transition-colors">Change Username</a>
-                        <span class="text-zinc-800">|</span>
-                        <a href="{% url 'movies:change_password' %}" class="text-zinc-500 hover:text-[#f5c518] transition-colors">Change Password</a>
-                        <span class="text-zinc-800">|</span>
-                    {% endif %}
-                    
-                    <button id="edit-bio-btn" class="text-[#f5c518] hover:underline focus:outline-none">
-                        Edit Bio
-                    </button>
-                    
-                    {% if request.user == profile.user %}
-                        <span class="text-zinc-800">|</span>
-                        <a href="{% url 'movies:delete_account' %}" class="text-zinc-500 hover:text-red-400 transition-colors">Delete Account</a>
-                    {% endif %}
-                </div>
-            </div>
+        <div class="text-center sm:text-left">
+          <h1 class="text-3xl font-black text-[#f5c518] font-['Chivo']">
+            {{ profile.user.username }}
+          </h1>
+          <p class="text-zinc-400 text-sm mt-1">
+            Member since {{ profile.user.date_joined|date:"F Y" }}
+          </p>
+        </div>
+      </div>
 
-            <div id="bio-display-wrapper" class="block">
-                <p class="text-zinc-300 leading-relaxed bg-zinc-900/40 p-4 rounded-lg border border-zinc-800/60 font-['Hanken_Grotesk']">
-                    {% if profile.bio %}
-                        {{ profile.bio }}
-                    {% else %}
-                        This user hasn't written a bio yet.
-                    {% endif %}
-                </p>
-            </div>
+      <div class="mt-6">
+        <div class="flex justify-between items-center mb-2">
+          <h2 class="text-lg font-bold uppercase tracking-wider text-zinc-400">
+            About Me
+          </h2>
 
-            <div id="bio-form-wrapper" class="hidden">
-                <form method="POST" enctype="multipart/form-data" class="flex flex-col gap-3">
-                    {% csrf_token %}
-                    
-                    <div>
-                        <label class="block text-xs uppercase text-zinc-500 font-bold mb-1">Update Bio:</label>
-                        {{ profile_form.bio }}
-                    </div>
+          <div class="flex items-center gap-3 text-xs font-semibold">
+            {% if request.user == profile.user %}
+            <a
+              href="{% url 'movies:change_username' %}"
+              class="text-zinc-500 hover:text-[#f5c518] transition-colors"
+              >Change Username</a
+            >
+            <span class="text-zinc-800">|</span>
+            <a
+              href="{% url 'movies:change_password' %}"
+              class="text-zinc-500 hover:text-[#f5c518] transition-colors"
+              >Change Password</a
+            >
+            <span class="text-zinc-800">|</span>
+            {% endif %}
 
-                    <div>
-                        <label class="block text-xs uppercase text-zinc-500 font-bold mb-1">Avatar Picture:</label>
-                        {{ profile_form.profile_picture }}
-                    </div>
+            <button
+              id="edit-bio-btn"
+              class="text-[#f5c518] hover:underline focus:outline-none"
+            >
+              Edit Bio
+            </button>
 
-                    <div class="flex gap-2 justify-end mt-1">
-                        <button type="button" id="cancel-bio-btn" class="bg-zinc-800 text-zinc-400 text-sm px-4 py-1.5 rounded hover:bg-zinc-700 transition-colors">
-                            Cancel
-                        </button>
-                        <button type="submit" class="bg-[#f5c518] text-black font-bold text-sm px-4 py-1.5 rounded hover:bg-[#dfb311] transition-colors">
-                            Save Profile
-                        </button>
-                    </div>
-                </form>
-            </div>
+            {% if request.user == profile.user %}
+            <span class="text-zinc-800">|</span>
+            <a
+              href="{% url 'movies:delete_account' %}"
+              class="text-zinc-500 hover:text-red-400 transition-colors"
+              >Delete Account</a
+            >
+            {% endif %}
+          </div>
         </div>
 
-        <div class="mt-8">
-            <h2 class="text-[#f5c518] font-['Chivo'] text-xl font-bold tracking-wide mb-4">MY WATCHLIST</h2>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                {% for movie in profile.watchlist.all %}
-                    <div class="bg-zinc-900/50 rounded-lg border border-zinc-800/60 overflow-hidden flex flex-col justify-between group relative">
-                        <a href="{% url 'movies:movie_detail' movie.id %}" class="p-4 block">
-                            <p class="font-bold text-white text-base group-hover:text-[#f5c518] transition-colors">{{ movie.title }}</p>
-                        </a>
-                        <div class="p-2 bg-zinc-950/40 border-t border-zinc-800/40 text-center">
-                            <a href="{% url 'movies:toggle_watchlist' movie.id %}" class="text-xs text-zinc-400 hover:text-red-400 transition-colors">
-                                Remove
-                            </a>
-                        </div>
-                    </div>
-                {% empty %}
-                    <p class="text-zinc-500 text-sm">Your watchlist is empty. Start adding some movies!</p>
-                {% endfor %}
-            </div>
+        <div id="bio-display-wrapper" class="block">
+          <p
+            class="text-zinc-300 leading-relaxed bg-zinc-900/40 p-4 rounded-lg border border-zinc-800/60 font-['Hanken_Grotesk']"
+          >
+            {% if profile.bio %} {{ profile.bio }} {% else %} This user hasn't
+            written a bio yet. {% endif %}
+          </p>
         </div>
 
-        <div class="mt-8 pt-4 border-t border-zinc-800">
-            <a href="{% url 'home' %}" class="inline-block bg-zinc-800 hover:bg-zinc-700 text-white font-medium px-4 py-2 rounded transition-colors">
-                &larr; Back to Home
+        <div id="bio-form-wrapper" class="hidden">
+          <form
+            method="POST"
+            enctype="multipart/form-data"
+            class="flex flex-col gap-3"
+          >
+            {% csrf_token %}
+
+            <div>
+              <label
+                class="block text-xs uppercase text-zinc-500 font-bold mb-1"
+                >Update Bio:</label
+              >
+              {{ profile_form.bio }}
+            </div>
+
+            <div>
+              <label
+                class="block text-xs uppercase text-zinc-500 font-bold mb-1"
+                >Avatar Picture:</label
+              >
+              {{ profile_form.profile_picture }}
+            </div>
+
+            <div class="flex gap-2 justify-end mt-1">
+              <button
+                type="button"
+                id="cancel-bio-btn"
+                class="bg-zinc-800 text-zinc-400 text-sm px-4 py-1.5 rounded hover:bg-zinc-700 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                class="bg-[#f5c518] text-black font-bold text-sm px-4 py-1.5 rounded hover:bg-[#dfb311] transition-colors"
+              >
+                Save Profile
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="mt-8">
+        <h2
+          class="text-[#f5c518] font-['Chivo'] text-xl font-bold tracking-wide mb-4"
+        >
+          MY WATCHLIST
+        </h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          {% for movie in profile.watchlist.all %}
+          <div
+            class="bg-zinc-900/50 rounded-lg border border-zinc-800/60 overflow-hidden flex flex-col justify-between group relative"
+          >
+            <a
+              href="{% url 'movies:movie_detail' movie.id %}"
+              class="p-4 block"
+            >
+              <p
+                class="font-bold text-white text-base group-hover:text-[#f5c518] transition-colors"
+              >
+                {{ movie.title }}
+              </p>
             </a>
+            <div
+              class="p-2 bg-zinc-950/40 border-t border-zinc-800/40 text-center"
+            >
+              <a
+                href="{% url 'movies:toggle_watchlist' movie.id %}"
+                class="text-xs text-zinc-400 hover:text-red-400 transition-colors"
+              >
+                Remove
+              </a>
+            </div>
+          </div>
+          {% empty %}
+          <p class="text-zinc-500 text-sm">
+            Your watchlist is empty. Start adding some movies!
+          </p>
+          {% endfor %}
         </div>
+      </div>
 
+      <div class="mt-8 pt-4 border-t border-zinc-800">
+        <a
+          href="{% url 'home' %}"
+          class="inline-block bg-zinc-800 hover:bg-zinc-700 text-white font-medium px-4 py-2 rounded transition-colors"
+        >
+          &larr; Back to Home
+        </a>
+      </div>
     </div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const editBtn = document.getElementById('edit-bio-btn');
-        const cancelBtn = document.getElementById('cancel-bio-btn');
-        const displayWrapper = document.getElementById('bio-display-wrapper');
-        const formWrapper = document.getElementById('bio-form-wrapper');
+      document.addEventListener("DOMContentLoaded", () => {
+        const editBtn = document.getElementById("edit-bio-btn");
+        const cancelBtn = document.getElementById("cancel-bio-btn");
+        const displayWrapper = document.getElementById("bio-display-wrapper");
+        const formWrapper = document.getElementById("bio-form-wrapper");
 
         if (!editBtn) return;
 
-        editBtn.addEventListener('click', () => {
-            displayWrapper.classList.replace('block', 'hidden');
-            formWrapper.classList.replace('hidden', 'block');
-            editBtn.classList.add('hidden');
+        editBtn.addEventListener("click", () => {
+          displayWrapper.classList.replace("block", "hidden");
+          formWrapper.classList.replace("hidden", "block");
+          editBtn.classList.add("hidden");
         });
 
-        cancelBtn.addEventListener('click', () => {
-            formWrapper.classList.replace('block', 'hidden');
-            displayWrapper.classList.replace('hidden', 'block');
-            editBtn.classList.remove('hidden');
+        cancelBtn.addEventListener("click", () => {
+          formWrapper.classList.replace("block", "hidden");
+          displayWrapper.classList.replace("hidden", "block");
+          editBtn.classList.remove("hidden");
         });
-    });
+      });
     </script>
-
-</body>
+  </body>
 </html>

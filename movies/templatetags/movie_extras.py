@@ -3,6 +3,7 @@ from movies.models import Rating
 
 register = template.Library()
 
+
 @register.filter
 def get_user_rating(movie, user):
     if user.is_authenticated:

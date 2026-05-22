@@ -1,28 +1,41 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Marquee | Delete Account</title>
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-[#131313] text-white min-h-screen flex items-center justify-center p-6">
-    <div class="max-w-md w-full bg-[#1c1b1b] rounded-xl p-6 border border-zinc-800 shadow-2xl text-center">
-        <h2 class="text-red-500 text-xl font-bold mb-2 font-['Chivo']">Delete Account Permanently?</h2>
-        <p class="text-zinc-400 text-sm mb-6 font-['Hanken_Grotesk']">
-            Are you absolutely sure? This will permanently delete your profile, review history, and custom watchlist. This action cannot be reversed.
-        </p>
-        
-        <form method="POST">
-            {% csrf_token %}
-            <div class="flex justify-center gap-4">
-                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold px-5 py-2 rounded text-sm transition-colors">
-                    Yes, Delete My Account
-                </button>
-                <a href="{% url 'movies:user_profile' %}" class="bg-zinc-800 text-white px-5 py-2 rounded text-sm hover:bg-zinc-700 transition-colors flex items-center">
-                    Cancel
-                </a>
-            </div>
-        </form>
+  </head>
+  <body
+    class="bg-[#131313] text-white min-h-screen flex items-center justify-center p-6"
+  >
+    <div
+      class="max-w-md w-full bg-[#1c1b1b] rounded-xl p-6 border border-zinc-800 shadow-2xl text-center"
+    >
+      <h2 class="text-red-500 text-xl font-bold mb-2 font-['Chivo']">
+        Delete Account Permanently?
+      </h2>
+      <p class="text-zinc-400 text-sm mb-6 font-['Hanken_Grotesk']">
+        Are you absolutely sure? This will permanently delete your profile,
+        review history, and custom watchlist. This action cannot be reversed.
+      </p>
+
+      <form method="POST">
+        {% csrf_token %}
+        <div class="flex justify-center gap-4">
+          <button
+            type="submit"
+            class="bg-red-600 hover:bg-red-700 text-white font-bold px-5 py-2 rounded text-sm transition-colors"
+          >
+            Yes, Delete My Account
+          </button>
+          <a
+            href="{% url 'movies:user_profile' %}"
+            class="bg-zinc-800 text-white px-5 py-2 rounded text-sm hover:bg-zinc-700 transition-colors flex items-center"
+          >
+            Cancel
+          </a>
+        </div>
+      </form>
     </div>
-</body>
+  </body>
 </html>
