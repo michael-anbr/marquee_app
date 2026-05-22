@@ -235,7 +235,7 @@
     
     {% if movie.poster %}
         <div class="hidden md:block h-[400px] aspect-[2/3] rounded-lg overflow-hidden shadow-2xl border border-zinc-800/80 flex-shrink-0">
-            <img src="{{ movie.poster.url }}" alt="{{ movie.title }}" class="w-full h-full object-contain bg-black">
+            <img src="{{ movie.poster.url }}" class="w-full h-full object-cover" alt="{{ movie.title }}" class="w-full h-full object-contain bg-black">
         </div>
     {% endif %}
 

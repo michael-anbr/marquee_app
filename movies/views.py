@@ -2,7 +2,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.shortcuts import render, get_object_or_404, redirect
-from django.db.models import Q
+from django.db.models import Q, Value
+from django.db.models.functions import Replace, Lower
 from .models import Movie, Person, Rating, Review
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -44,11 +45,23 @@ def movie_detail(request, movie_id):
     return render(request, 'movies/movie_detail.html', context)
 
 def all_movies(request):
-    query = request.GET.get('q')
+    query = request.GET.get('q', '').strip() # Clean leading/trailing spaces
+    
     if query:
-        movies_list = Movie.objects.filter(
-            Q(title__icontains=query) | Q(description__icontains=query)
+        clean_query = query.lower().replace(" ", "").replace("-", "").replace(":", "")
+
+        annotated_movies = Movie.objects.annotate(
+            no_spaces_title=Replace(Lower('title'), Value(' '), Value(''))
+        ).annotate(
+            no_hyphens_title=Replace('no_spaces_title', Value('-'), Value(''))
+        ).annotate(
+            clean_title=Replace('no_hyphens_title', Value(':'), Value(''))
+        )
+
+        movies_list = annotated_movies.filter(
+            Q(clean_title__icontains=clean_query) | Q(description__icontains=query)
         ).distinct().order_by('title')
+        
     else:
         movies_list = Movie.objects.all().order_by('title')
 
