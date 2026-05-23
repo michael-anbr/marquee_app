@@ -1,3 +1,5 @@
+{% load movie_extras %}
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -138,34 +140,47 @@
         >
           MY WATCHLIST
         </h2>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+        <div
+          id="watchlist-grid"
+          class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"
+        >
           {% for movie in profile.watchlist.all %}
           <div
-            class="bg-zinc-900/50 rounded-lg border border-zinc-800/60 overflow-hidden flex flex-col justify-between group relative"
+            id="movie-card-{{ movie.slug }}"
+            class="bg-zinc-900/50 rounded-lg border border-zinc-800/60 overflow-hidden flex flex-col justify-between group relative transition-all duration-300"
           >
             <a
-              href="{% url 'movies:movie_detail' movie.id %}"
+              href="{% url 'movies:movie_detail' movie.slug %}"
               class="p-4 block"
             >
+              {% if movie.poster %}
+              <img
+                src="{{ movie.poster.url }}"
+                alt="{{ movie.title }}"
+                class="w-full h-36 object-cover rounded mb-3 border border-zinc-800"
+              />
+              {% endif %}
               <p
-                class="font-bold text-white text-base group-hover:text-[#f5c518] transition-colors"
+                class="font-bold text-white text-base group-hover:text-[#f5c518] transition-colors line-clamp-2"
               >
                 {{ movie.title }}
               </p>
             </a>
+
             <div
               class="p-2 bg-zinc-950/40 border-t border-zinc-800/40 text-center"
             >
-              <a
-                href="{% url 'movies:toggle_watchlist' movie.id %}"
-                class="text-xs text-zinc-400 hover:text-red-400 transition-colors"
+              <button
+                data-slug="{{ movie.slug }}"
+                data-url="{% url 'movies:toggle_watchlist' movie.slug %}"
+                class="remove-watchlist-btn text-xs text-zinc-400 hover:text-red-400 transition-colors block w-full py-1 focus:outline-none"
               >
                 Remove
-              </a>
+              </button>
             </div>
           </div>
           {% empty %}
-          <p class="text-zinc-500 text-sm">
+          <p id="empty-watchlist-msg" class="text-zinc-500 text-sm">
             Your watchlist is empty. Start adding some movies!
           </p>
           {% endfor %}
@@ -184,24 +199,81 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
+        // --- BIO FORM TOGGLE ---
         const editBtn = document.getElementById("edit-bio-btn");
         const cancelBtn = document.getElementById("cancel-bio-btn");
         const displayWrapper = document.getElementById("bio-display-wrapper");
         const formWrapper = document.getElementById("bio-form-wrapper");
 
-        if (!editBtn) return;
+        if (editBtn) {
+          editBtn.addEventListener("click", () => {
+            displayWrapper.classList.replace("block", "hidden");
+            formWrapper.classList.replace("hidden", "block");
+            editBtn.classList.add("hidden");
+          });
+        }
 
-        editBtn.addEventListener("click", () => {
-          displayWrapper.classList.replace("block", "hidden");
-          formWrapper.classList.replace("hidden", "block");
-          editBtn.classList.add("hidden");
-        });
+        if (cancelBtn) {
+          cancelBtn.addEventListener("click", () => {
+            formWrapper.classList.replace("block", "hidden");
+            displayWrapper.classList.replace("hidden", "block");
+            editBtn.classList.remove("hidden");
+          });
+        }
 
-        cancelBtn.addEventListener("click", () => {
-          formWrapper.classList.replace("block", "hidden");
-          displayWrapper.classList.replace("hidden", "block");
-          editBtn.classList.remove("hidden");
-        });
+        // --- PROFILE WATCHLIST REMOVAL AJAX ---
+        const watchlistGrid = document.getElementById("watchlist-grid");
+
+        if (watchlistGrid) {
+          watchlistGrid.addEventListener("click", function (e) {
+            if (e.target.classList.contains("remove-watchlist-btn")) {
+              e.preventDefault();
+
+              const button = e.target;
+              const movieSlug = button.getAttribute("data-slug");
+              const url = button.getAttribute("data-url");
+              const csrfToken = "{{ csrf_token }}";
+
+              fetch(url, {
+                method: "POST",
+                headers: {
+                  "X-Requested-With": "XMLHttpRequest",
+                  "X-CSRFToken": csrfToken,
+                },
+              })
+                .then((res) => res.json())
+                .then((data) => {
+                  if (!data.in_watchlist) {
+                    const movieCard = document.getElementById(
+                      `movie-card-${movieSlug}`,
+                    );
+                    if (movieCard) {
+                      // Apply visual scaling and transparency fades
+                      movieCard.classList.add("opacity-0", "scale-95");
+
+                      // Drop structural element node completely once animation ends
+                      setTimeout(() => {
+                        movieCard.remove();
+
+                        // Render fallback text if grid layout drops to zero items
+                        if (
+                          watchlistGrid.querySelectorAll("[id^='movie-card-']")
+                            .length === 0
+                        ) {
+                          watchlistGrid.innerHTML = `
+                            <p id="empty-watchlist-msg" class="text-zinc-500 text-sm">
+                              Your watchlist is empty. Start adding some movies!
+                            </p>
+                          `;
+                        }
+                      }, 300);
+                    }
+                  }
+                })
+                .catch((err) => console.error("Error removing movie:", err));
+            }
+          });
+        }
       });
     </script>
   </body>

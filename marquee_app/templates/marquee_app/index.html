@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="en" class="dark">
   <head>
@@ -191,7 +192,6 @@
   <body
     class="bg-background text-on-background selection:bg-primary-container selection:text-on-primary-container"
   >
-    <!-- TopAppBar -->
     <header
       class="bg-surface-container dark:bg-surface-container text-primary dark:text-primary docked full-width top-0 sticky z-50 border-b border-outline-variant dark:border-outline-variant flat no shadows"
     >
@@ -287,9 +287,11 @@
       </div>
     </header>
     <main class="max-w-7xl mx-auto pb-xl">
-      <!-- Hero Carousel Section -->
       {% block carousel %}
-      <div class="relative w-full h-[550px] overflow-hidden bg-[#131313]">
+      <div
+        id="hero-carousel"
+        class="relative w-full h-[550px] overflow-hidden bg-[#131313]"
+      >
         <button
           class="absolute left-5 top-1/2 -translate-y-1/2 z-30 bg-black/60 hover:bg-[#f5c518] text-white text-3xl p-3 rounded transition-colors duration-300"
           onclick="moveSlide(-1)"
@@ -330,7 +332,6 @@
                   src="{{ movie.poster.url }}"
                   class="w-full h-full object-cover"
                   alt="{{ movie.title }}"
-                  class="w-full h-full object-contain bg-black"
                 />
               </div>
               {% endif %}
@@ -352,20 +353,21 @@
 
                 <div class="flex gap-4 mt-2">
                   <a
-                    href="{% url 'movies:movie_detail' movie.id %}"
+                    href="{% url 'movies:movie_detail' movie.slug %}"
                     class="bg-[#f5c518] text-black font-semibold px-5 py-2 rounded shadow hover:bg-yellow-500 transition-colors"
                   >
                     View Details
                   </a>
+
                   {% if user.is_authenticated %}
-                  <a
-                    href="{% url 'movies:toggle_watchlist' movie.id %}"
-                    data-id="{{ movie.id }}"
-                    class="watchlist-btn bg-white/20 backdrop-blur-sm text-white font-semibold px-5 py-2 rounded shadow hover:bg-white/30 transition-colors"
+                  <button
+                    data-slug="{{ movie.slug }}"
+                    data-url="{% url 'movies:toggle_watchlist' movie.slug %}"
+                    class="watchlist-btn backdrop-blur-sm text-white font-semibold px-5 py-2 rounded shadow transition-colors border border-transparent {% if movie in user.profile.watchlist.all %}bg-red-900/40 border-red-800 text-red-300 hover:bg-red-900/60{% else %}bg-white/20 hover:bg-white/30{% endif %}"
                   >
                     {% if movie in user.profile.watchlist.all %} ✓ In Watchlist
                     {% else %} + Watchlist {% endif %}
-                  </a>
+                  </button>
                   {% else %}
                   <a
                     href="{% url 'movies:login' %}"
@@ -384,7 +386,6 @@
       {% endblock %} {% block content %} {% endblock %}
     </main>
 
-    <!-- Footer -->
     <footer
       class="bg-background dark:bg-background text-on-background dark:text-on-background full-width bottom-0 border-t border-outline-variant dark:border-outline-variant mt-xl flat no shadows"
     >
@@ -403,6 +404,7 @@
         </div>
       </div>
     </footer>
+
     <script>
       let currentSlideIndex = 0;
 
@@ -424,29 +426,48 @@
         slides[currentSlideIndex].classList.add("active");
       }
     </script>
+
     <script>
-      document.querySelectorAll(".watchlist-btn").forEach((button) => {
-        button.addEventListener("click", function (e) {
-          e.preventDefault();
+      document.addEventListener("DOMContentLoaded", () => {
+        const carouselContainer = document.getElementById("hero-carousel");
 
-          const movieId = this.getAttribute("data-id");
-          const url = this.getAttribute("href");
+        if (carouselContainer) {
+          carouselContainer.addEventListener("click", function (e) {
+            if (e.target.classList.contains("watchlist-btn")) {
+              e.preventDefault();
 
-          fetch(url, {
-            headers: {
-              "X-Requested-With": "XMLHttpRequest", // Tells Django this is an AJAX call
-            },
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              if (data.in_watchlist) {
-                this.innerHTML = "✓ In Watchlist";
-              } else {
-                this.innerHTML = "+ Watchlist";
-              }
-            })
-            .catch((error) => console.error("Error:", error));
-        });
+              const button = e.target;
+              const url = button.getAttribute("data-url");
+              const csrfToken = "{{ csrf_token }}";
+
+              fetch(url, {
+                method: "POST",
+                headers: {
+                  "X-Requested-With": "XMLHttpRequest",
+                  "X-CSRFToken": csrfToken,
+                },
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  if (data.in_watchlist) {
+                    button.innerHTML = "✓ In Watchlist";
+                    button.className =
+                      "watchlist-btn backdrop-blur-sm px-5 py-2 rounded shadow transition-colors border bg-red-900/40 border-red-800 text-red-300 hover:bg-red-900/60 font-semibold";
+                  } else {
+                    button.innerHTML = "+ Watchlist";
+                    button.className =
+                      "watchlist-btn backdrop-blur-sm px-5 py-2 rounded shadow transition-colors border border-transparent bg-white/20 text-white hover:bg-white/30 font-semibold";
+                  }
+                })
+                .catch((error) =>
+                  console.error(
+                    "Error managing carousel watchlist item:",
+                    error,
+                  ),
+                );
+            }
+          });
+        }
       });
     </script>
   </body>

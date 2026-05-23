@@ -53,6 +53,8 @@ class Movie(models.Model):
     year = models.PositiveIntegerField()
     description = models.TextField(blank=True)
     poster = models.ImageField(upload_to="posters/", blank=True, null=True)
+    watchlist = models.ManyToManyField(User, related_name="movie_watchlist", blank=True)
+
     cast = models.ManyToManyField(
         Person, through="MovieCast", related_name="acting_credits", blank=True
     )
@@ -67,6 +69,7 @@ class Movie(models.Model):
 
     def __str__(self):
         return f"{self.title} ({self.year})"
+
 
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

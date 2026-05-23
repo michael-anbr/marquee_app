@@ -22,7 +22,7 @@ urlpatterns = [
         name="logout",
     ),
     path(
-        "movie/<int:movie_id>/watchlist/",
+        "movie/<slug:movie_slug>/watchlist/",
         views.toggle_watchlist,
         name="toggle_watchlist",
     ),

@@ -40,139 +40,199 @@
             {{ movie.description }}
           </p>
 
-          <div
-            class="mt-2 flex items-center gap-3 bg-zinc-900/40 p-3 rounded-lg border border-zinc-800/60 inline-flex self-start"
-          >
-            <span
-              class="text-sm font-bold tracking-wide text-zinc-400 uppercase font-['Hanken_Grotesk']"
-              >Your Rating:</span
-            >
-
+          <div class="mt-2 flex flex-wrap items-center gap-4">
             <div
-              class="flex items-center gap-1"
-              id="star-rating-container"
-              data-movie-id="{{ movie.id }}"
+              class="flex items-center gap-3 bg-zinc-900/40 p-3 rounded-lg border border-zinc-800/60 inline-flex"
             >
-              <button
-                data-value="1"
-                class="star-btn text-zinc-600 hover:text-[#f5c518] transition-colors focus:outline-none"
+              <span
+                class="text-sm font-bold tracking-wide text-zinc-400 uppercase font-['Hanken_Grotesk']"
+                >Your Rating:</span
               >
-                <svg
-                  class="w-7 h-7 pointer-events-none fill-current"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
-                  />
-                </svg>
-              </button>
-              <button
-                data-value="2"
-                class="star-btn text-zinc-600 hover:text-[#f5c518] transition-colors focus:outline-none"
+
+              <div
+                class="flex items-center gap-1"
+                id="star-rating-container"
+                data-movie-id="{{ movie.id }}"
               >
-                <svg
-                  class="w-7 h-7 pointer-events-none fill-current"
-                  viewBox="0 0 24 24"
+                <button
+                  data-value="1"
+                  class="star-btn text-zinc-600 hover:text-[#f5c518] transition-colors focus:outline-none"
                 >
-                  <path
-                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
-                  />
-                </svg>
-              </button>
-              <button
-                data-value="3"
-                class="star-btn text-zinc-600 hover:text-[#f5c518] transition-colors focus:outline-none"
-              >
-                <svg
-                  class="w-7 h-7 pointer-events-none fill-current"
-                  viewBox="0 0 24 24"
+                  <svg
+                    class="w-7 h-7 pointer-events-none fill-current"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                    />
+                  </svg>
+                </button>
+                <button
+                  data-value="2"
+                  class="star-btn text-zinc-600 hover:text-[#f5c518] transition-colors focus:outline-none"
                 >
-                  <path
-                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
-                  />
-                </svg>
-              </button>
-              <button
-                data-value="4"
-                class="star-btn text-zinc-600 hover:text-[#f5c518] transition-colors focus:outline-none"
-              >
-                <svg
-                  class="w-7 h-7 pointer-events-none fill-current"
-                  viewBox="0 0 24 24"
+                  <svg
+                    class="w-7 h-7 pointer-events-none fill-current"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                    />
+                  </svg>
+                </button>
+                <button
+                  data-value="3"
+                  class="star-btn text-zinc-600 hover:text-[#f5c518] transition-colors focus:outline-none"
                 >
-                  <path
-                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
-                  />
-                </svg>
-              </button>
-              <button
-                data-value="5"
-                class="star-btn text-zinc-600 hover:text-[#f5c518] transition-colors focus:outline-none"
-              >
-                <svg
-                  class="w-7 h-7 pointer-events-none fill-current"
-                  viewBox="0 0 24 24"
+                  <svg
+                    class="w-7 h-7 pointer-events-none fill-current"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                    />
+                  </svg>
+                </button>
+                <button
+                  data-value="4"
+                  class="star-btn text-zinc-600 hover:text-[#f5c518] transition-colors focus:outline-none"
                 >
-                  <path
-                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
-                  />
-                </svg>
-              </button>
+                  <svg
+                    class="w-7 h-7 pointer-events-none fill-current"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                    />
+                  </svg>
+                </button>
+                <button
+                  data-value="5"
+                  class="star-btn text-zinc-600 hover:text-[#f5c518] transition-colors focus:outline-none"
+                >
+                  <svg
+                    class="w-7 h-7 pointer-events-none fill-current"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                    />
+                  </svg>
+                </button>
+              </div>
             </div>
+
+            {% if user.is_authenticated %}
+            <form
+              id="watchlist-form"
+              action="{% url 'movies:toggle_watchlist' movie.slug %}"
+              method="POST"
+              class="inline-block"
+            >
+              {% csrf_token %}
+              <button
+                type="submit"
+                id="watchlist-btn"
+                class="flex items-center gap-2 p-3 rounded-lg border text-sm font-bold uppercase tracking-wide font-['Hanken_Grotesk'] transition-all focus:outline-none {% if movie in user.profile.watchlist.all %}bg-red-900/20 border-red-800 text-red-400 hover:bg-red-900/40{% else %}bg-zinc-900/40 border-zinc-800 text-[#f5c518] hover:bg-zinc-800{% endif %}"
+              >
+                {% if movie in user.profile.watchlist.all %} ❌ Remove from
+                Watchlist {% else %} ➕ Add to Watchlist {% endif %}
+              </button>
+            </form>
+            {% endif %}
           </div>
         </div>
       </div>
+
       <script>
         document.addEventListener("DOMContentLoaded", () => {
+          // --- RATINGS JAVASCRIPT ---
           const container = document.getElementById("star-rating-container");
-          if (!container) return;
+          if (container) {
+            const movieId = container.getAttribute("data-movie-id");
+            const stars = container.querySelectorAll(".star-btn");
+            let activeRating = parseInt("0{{ user_rating }}");
+            highlightStars(activeRating);
 
-          const movieId = container.getAttribute("data-movie-id");
-          const stars = container.querySelectorAll(".star-btn");
-          let activeRating = parseInt("0{{ user_rating }}");
-          highlightStars(activeRating);
+            function highlightStars(count) {
+              stars.forEach((star, index) => {
+                if (index < count) {
+                  star.classList.remove("text-zinc-600");
+                  star.classList.add("text-[#f5c518]");
+                } else {
+                  star.classList.remove("text-[#f5c518]");
+                  star.classList.add("text-zinc-600");
+                }
+              });
+            }
 
-          function highlightStars(count) {
-            stars.forEach((star, index) => {
-              if (index < count) {
-                star.classList.remove("text-zinc-600");
-                star.classList.add("text-[#f5c518]");
-              } else {
-                star.classList.remove("text-[#f5c518]");
-                star.classList.add("text-zinc-600");
-              }
+            stars.forEach((star) => {
+              star.addEventListener("mouseenter", function () {
+                highlightStars(parseInt(this.getAttribute("data-value")));
+              });
+
+              star.addEventListener("click", function () {
+                const score = parseInt(this.getAttribute("data-value"));
+
+                fetch(`/movies/movie/${movieId}/rate/`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}",
+                  },
+                  body: JSON.stringify({ score: score }),
+                })
+                  .then((res) => res.json())
+                  .then((data) => {
+                    if (data.success) {
+                      activeRating = data.score;
+                      highlightStars(activeRating);
+                    }
+                  });
+              });
+            });
+
+            container.addEventListener("mouseleave", () => {
+              highlightStars(activeRating);
             });
           }
 
-          stars.forEach((star) => {
-            star.addEventListener("mouseenter", function () {
-              highlightStars(parseInt(this.getAttribute("data-value")));
-            });
+          // --- WATCHLIST AJAX JAVASCRIPT ---
+          const watchlistForm = document.getElementById("watchlist-form");
+          if (watchlistForm) {
+            watchlistForm.addEventListener("submit", function (e) {
+              e.preventDefault();
 
-            star.addEventListener("click", function () {
-              const score = parseInt(this.getAttribute("data-value"));
+              const url = this.action;
+              const csrfToken = this.querySelector(
+                "[name=csrfmiddlewaretoken]",
+              ).value;
+              const button = document.getElementById("watchlist-btn");
 
-              fetch(`/movies/movie/${movieId}/rate/`, {
+              fetch(url, {
                 method: "POST",
                 headers: {
-                  "Content-Type": "application/json",
-                  "X-CSRFToken": "{{ csrf_token }}",
+                  "X-Requested-With": "XMLHttpRequest",
+                  "X-CSRFToken": csrfToken,
                 },
-                body: JSON.stringify({ score: score }),
               })
                 .then((res) => res.json())
                 .then((data) => {
-                  if (data.success) {
-                    activeRating = data.score;
-                    highlightStars(activeRating);
+                  if (data.in_watchlist) {
+                    button.textContent = "❌ Remove from Watchlist";
+                    button.className =
+                      "flex items-center gap-2 p-3 rounded-lg border text-sm font-bold uppercase tracking-wide font-['Hanken_Grotesk'] transition-all focus:outline-none bg-red-900/20 border-red-800 text-red-400 hover:bg-red-900/40";
+                  } else {
+                    button.textContent = "➕ Add to Watchlist";
+                    button.className =
+                      "flex items-center gap-2 p-3 rounded-lg border text-sm font-bold uppercase tracking-wide font-['Hanken_Grotesk'] transition-all focus:outline-none bg-zinc-900/40 border-zinc-800 text-[#f5c518] hover:bg-zinc-800";
                   }
-                });
+                })
+                .catch((err) =>
+                  console.error("Error managing watchlist:", err),
+                );
             });
-          });
-
-          container.addEventListener("mouseleave", () => {
-            highlightStars(activeRating);
-          });
+          }
         });
       </script>
 

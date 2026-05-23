@@ -11,10 +11,9 @@ from django.contrib.auth import login, logout
 from django.http import HttpResponseForbidden
 from .forms import RegisterForm, ReviewForm, ProfileForm, ChangeUsernameForm
 
+
 def movie_detail(request, slug):
-    movie = get_object_or_404(
-        Movie.objects.prefetch_related("cast", "crew"), slug=slug
-    )
+    movie = get_object_or_404(Movie.objects.prefetch_related("cast", "crew"), slug=slug)
 
     if request.method == "POST" and request.user.is_authenticated:
         form = ReviewForm(request.POST)
@@ -42,6 +41,7 @@ def movie_detail(request, slug):
         "reviews": reviews,
     }
     return render(request, "movies/movie_detail.html", context)
+
 
 def all_movies(request):
     query = request.GET.get("q", "").strip()  # Clean leading/trailing spaces
@@ -96,6 +96,7 @@ def profile_view(request):
     context = {
         "profile": profile,
         "profile_form": form,
+        "watchlist": profile.watchlist.all(),
     }
     return render(request, "movies/profile.html", context)
 
@@ -113,8 +114,8 @@ def register_view(request):
 
 
 @login_required
-def toggle_watchlist(request, movie_id):
-    movie = get_object_or_404(Movie, id=movie_id)
+def toggle_watchlist(request, movie_slug):
+    movie = get_object_or_404(Movie, slug=movie_slug)
     profile = request.user.profile
 
     if movie in profile.watchlist.all():
