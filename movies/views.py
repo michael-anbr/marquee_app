@@ -182,6 +182,8 @@ def delete_review(request, review_id):
         review.delete()
         return redirect("movies:movie_detail", slug=movie_slug)
 
+    return render(request, "movies/confirm_delete_review.html", {"review": review})
+
 
 @login_required
 def change_username(request):
@@ -204,6 +206,6 @@ def delete_account(request):
         logout(request)
         user.delete()
         messages.success(request, "Your account has been permanently deleted.")
-        return redirect("movies:all_movies")
+        return redirect("/")
 
     return render(request, "movies/confirm_delete_account.html")
