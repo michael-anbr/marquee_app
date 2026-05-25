@@ -26,7 +26,7 @@
             Yes, Delete
           </button>
           <a
-            href="{% url 'movies:movie_detail' review.movie.id %}"
+            href="{% url 'movies:movie_detail' slug=review.movie.slug %}"
             class="bg-zinc-800 text-white px-5 py-2 rounded hover:bg-zinc-700 transition-colors"
           >
             Cancel

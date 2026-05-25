@@ -163,7 +163,7 @@ def edit_review(request, review_id):
         form = ReviewForm(request.POST, instance=review)
         if form.is_valid():
             form.save()
-            return redirect("movies:movie_detail", movie_id=review.movie.id)
+            return redirect("movies:movie_detail", slug=review.movie.slug)
     else:
         form = ReviewForm(instance=review)
 
@@ -178,11 +178,9 @@ def delete_review(request, review_id):
         return HttpResponseForbidden("You are not allowed to delete this review.")
 
     if request.method == "POST":
-        movie_id = review.movie.id
+        movie_slug = review.movie.slug
         review.delete()
-        return redirect("movies:movie_detail", movie_id=movie_id)
-
-    return render(request, "movies/confirm_delete_review.html", {"review": review})
+        return redirect("movies:movie_detail", slug=movie_slug)
 
 
 @login_required
