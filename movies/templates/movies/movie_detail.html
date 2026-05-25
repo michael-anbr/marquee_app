@@ -52,7 +52,7 @@
               <div
                 class="flex items-center gap-1"
                 id="star-rating-container"
-                data-movie-slug="{{ movie.slug }}"
+                data-movie-id="{{ movie.id }}"
               >
                 <button
                   data-value="1"
@@ -174,7 +174,13 @@
               star.addEventListener("click", function () {
                 const score = parseInt(this.getAttribute("data-value"));
 
-                fetch(`/movies/movie/${movieId}/rate/`, {
+                // This dynamically generates the exact URL pattern required by Django
+                const url = "{% url 'movies:rate_movie' 12345 %}".replace(
+                  "12345",
+                  movieId,
+                );
+
+                fetch(url, {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
@@ -356,7 +362,7 @@
         <p class="text-zinc-500 text-sm mb-8">
           Please
           <a
-            href="{% url 'movies:login' %}"
+            href="{% url 'movies:all_movies' %}"
             class="text-[#f5c518] hover:underline"
             >login</a
           >
