@@ -108,6 +108,10 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
 MEDIA_ROOT = BASE_DIR / "marquee_app" / "media"
 MEDIA_URL = "/media/"
 LOGIN_REDIRECT_URL = "movies:user_profile"
