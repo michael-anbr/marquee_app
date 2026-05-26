@@ -174,7 +174,6 @@
               star.addEventListener("click", function () {
                 const score = parseInt(this.getAttribute("data-value"));
 
-                // This dynamically generates the exact URL pattern required by Django
                 const url = "{% url 'movies:rate_movie' 12345 %}".replace(
                   "12345",
                   movieId,
@@ -273,7 +272,12 @@
               <p
                 class="font-bold text-white text-base leading-snug break-words"
               >
-                {{ membership.person.name }}
+                <a
+                  href="{% url 'movies:actor_profile' membership.person.slug %}"
+                  class="hover:text-[#f5c518] hover:underline transition-colors"
+                >
+                  {{ membership.person.name }}
+                </a>
               </p>
               {% if membership.character_name %}
               <p class="text-xs text-zinc-400 mt-0.5 break-words">
@@ -320,8 +324,14 @@
             <div class="flex flex-col justify-center flex-1 min-w-0 h-full">
               <span
                 class="text-white font-medium text-base leading-tight break-words"
-                >{{ membership.person.name }}</span
               >
+                <a
+                  href="{% url 'movies:actor_profile' membership.person.slug %}"
+                  class="hover:text-[#f5c518] hover:underline transition-colors"
+                >
+                  {{ membership.person.name }}
+                </a>
+              </span>
               {% if membership.role %}
               <div class="mt-1">
                 <span
