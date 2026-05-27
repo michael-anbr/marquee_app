@@ -283,15 +283,15 @@
                     if (data.liked) {
                       // Force active gold layout
                       targetButton.style.backgroundColor =
-                        "rgba(245, 197, 24, 0.1)"; // bg-[#f5c518]/10
-                      targetButton.style.borderColor = "#f5c518"; // border-[#f5c518]
-                      targetButton.style.color = "#f5c518"; // text-[#f5c518]
+                        "rgba(245, 197, 24, 0.1)";
+                      targetButton.style.borderColor = "#f5c518";
+                      targetButton.style.color = "#f5c518";
                     } else {
                       // Force reset back to inactive gray layout
                       targetButton.style.backgroundColor =
-                        "rgba(24, 24, 27, 0.4)"; // bg-zinc-900/40
-                      targetButton.style.borderColor = "#27272a"; // border-zinc-800
-                      targetButton.style.color = "#a1a1aa"; // text-zinc-400
+                        "rgba(24, 24, 27, 0.4)";
+                      targetButton.style.borderColor = "#27272a";
+                      targetButton.style.color = "#a1a1aa";
                     }
                   }
                 })
@@ -450,9 +450,9 @@
             <div
               class="w-10 h-10 bg-zinc-800 rounded-full flex-shrink-0 flex items-center justify-center text-zinc-500 overflow-hidden border border-zinc-700"
             >
-              {% if review.user.profile.avatar %}
+              {% if review.user.profile.profile_picture %}
               <img
-                src="{{ review.user.profile.avatar.url }}"
+                src="{{ review.user.profile.profile_picture.url }}"
                 alt="{{ review.user.username }}"
                 class="w-full h-full object-cover"
               />
