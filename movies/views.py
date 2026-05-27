@@ -213,3 +213,28 @@ def delete_account(request):
         return redirect("/")
 
     return render(request, "movies/confirm_delete_account.html")
+
+
+@login_required
+def toggle_like_review(request, review_id):
+    if not request.user.is_authenticated:
+        return JsonResponse({"success": False, "error": "Login required"}, status=401)
+
+    if request.method == "POST":
+        review = get_object_or_404(Review, id=review_id)
+        user = request.user
+
+        user_liked = review.likes.filter(id=user.id).exists()
+
+        if user_liked:
+            review.likes.remove(user)
+            liked = False
+        else:
+            review.likes.add(user)
+            liked = True
+
+        return JsonResponse(
+            {"success": True, "liked": liked, "total_likes": review.likes.count()}
+        )
+
+    return JsonResponse({"success": False}, status=400)

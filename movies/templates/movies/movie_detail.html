@@ -226,14 +226,16 @@
               })
                 .then((res) => res.json())
                 .then((data) => {
-                  if (data.in_watchlist) {
-                    button.textContent = "❌ Remove from Watchlist";
-                    button.className =
-                      "flex items-center gap-2 p-3 rounded-lg border text-sm font-bold uppercase tracking-wide font-['Hanken_Grotesk'] transition-all focus:outline-none bg-red-900/20 border-red-800 text-red-400 hover:bg-red-900/40";
-                  } else {
-                    button.textContent = "➕ Add to Watchlist";
-                    button.className =
-                      "flex items-center gap-2 p-3 rounded-lg border text-sm font-bold uppercase tracking-wide font-['Hanken_Grotesk'] transition-all focus:outline-none bg-zinc-900/40 border-zinc-800 text-[#f5c518] hover:bg-zinc-800";
+                  if (data.success) {
+                    if (data.in_watchlist) {
+                      button.textContent = "❌ Remove from Watchlist";
+                      button.className =
+                        "flex items-center gap-2 p-3 rounded-lg border text-sm font-bold uppercase tracking-wide font-['Hanken_Grotesk'] transition-all focus:outline-none bg-red-900/20 border-red-800 text-red-400 hover:bg-red-900/40";
+                    } else {
+                      button.textContent = "➕ Add to Watchlist";
+                      button.className =
+                        "flex items-center gap-2 p-3 rounded-lg border text-sm font-bold uppercase tracking-wide font-['Hanken_Grotesk'] transition-all focus:outline-none bg-zinc-900/40 border-zinc-800 text-[#f5c518] hover:bg-zinc-800";
+                    }
                   }
                 })
                 .catch((err) =>
@@ -241,6 +243,63 @@
                 );
             });
           }
+
+          // --- REVIEW LIKE AJAX JAVASCRIPT ---
+          const likeButtons = document.querySelectorAll(".like-review-btn");
+          likeButtons.forEach((button) => {
+            button.addEventListener("click", (e) => {
+              const targetButton = e.currentTarget;
+              const reviewId = targetButton.getAttribute("data-review-id");
+              const countSpan = targetButton.querySelector(".like-count");
+              const url = "{% url 'movies:toggle_like_review' 12345 %}".replace(
+                "12345",
+                reviewId,
+              );
+              const csrfToken =
+                document.querySelector("[name=csrfmiddlewaretoken]")?.value ||
+                "{{ csrf_token }}";
+
+              fetch(url, {
+                method: "POST",
+                headers: {
+                  "X-Requested-With": "XMLHttpRequest",
+                  "X-CSRFToken": csrfToken,
+                  "Content-Type": "application/json",
+                },
+              })
+                .then((res) => {
+                  if (res.status === 401 || res.status === 403) {
+                    window.location.href = "{% url 'movies:all_movies' %}";
+                    return;
+                  }
+                  if (!res.ok)
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                  return res.json();
+                })
+                .then((data) => {
+                  if (data && data.success) {
+                    countSpan.textContent = data.total_likes;
+
+                    if (data.liked) {
+                      // Force active gold layout
+                      targetButton.style.backgroundColor =
+                        "rgba(245, 197, 24, 0.1)"; // bg-[#f5c518]/10
+                      targetButton.style.borderColor = "#f5c518"; // border-[#f5c518]
+                      targetButton.style.color = "#f5c518"; // text-[#f5c518]
+                    } else {
+                      // Force reset back to inactive gray layout
+                      targetButton.style.backgroundColor =
+                        "rgba(24, 24, 27, 0.4)"; // bg-zinc-900/40
+                      targetButton.style.borderColor = "#27272a"; // border-zinc-800
+                      targetButton.style.color = "#a1a1aa"; // text-zinc-400
+                    }
+                  }
+                })
+                .catch((err) =>
+                  console.error("Error toggling review like:", err),
+                );
+            });
+          });
         });
       </script>
 
@@ -385,53 +444,98 @@
 
         <div class="flex flex-col gap-4">
           {% for review in reviews %}
-          <div class="bg-zinc-900/20 p-5 rounded-lg border border-zinc-800/40">
-            <div class="flex justify-between items-center mb-2">
-              <div class="flex items-center gap-3">
-                <span
-                  class="text-[#f5c518] font-bold text-sm font-['Hanken_Grotesk']"
-                >
-                  {{ review.user.username }}
-                </span>
+          <div
+            class="bg-zinc-900/20 p-5 rounded-lg border border-zinc-800/40 flex gap-4"
+          >
+            <div
+              class="w-10 h-10 bg-zinc-800 rounded-full flex-shrink-0 flex items-center justify-center text-zinc-500 overflow-hidden border border-zinc-700"
+            >
+              {% if review.user.profile.avatar %}
+              <img
+                src="{{ review.user.profile.avatar.url }}"
+                alt="{{ review.user.username }}"
+                class="w-full h-full object-cover"
+              />
+              {% else %}
+              <span class="text-xs font-bold uppercase text-zinc-400"
+                >{{ review.user.username|slice:":2" }}</span
+              >
+              {% endif %}
+            </div>
 
-                <div class="flex items-center text-[#f5c518] gap-0.5">
-                  {% for i in movie|get_user_rating:review.user %}
-                  <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+            <div class="flex-1 min-w-0">
+              <div class="flex justify-between items-center mb-2">
+                <div class="flex items-center gap-3">
+                  <span
+                    class="text-[#f5c518] font-bold text-sm font-['Hanken_Grotesk']"
+                  >
+                    {{ review.user.username }}
+                  </span>
+
+                  <div class="flex items-center text-[#f5c518] gap-0.5">
+                    {% for i in movie|get_user_rating:review.user %}
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                      <path
+                        d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                      />
+                    </svg>
+                    {% endfor %}
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-4">
+                  {% if request.user == review.user %}
+                  <div class="flex items-center gap-2 text-xs">
+                    <a
+                      href="{% url 'movies:edit_review' review.id %}"
+                      class="text-zinc-400 hover:text-[#f5c518] transition-colors"
+                      >Edit</a
+                    >
+                    <span class="text-zinc-700">|</span>
+                    <a
+                      href="{% url 'movies:delete_review' review.id %}"
+                      class="text-zinc-400 hover:text-red-400 transition-colors"
+                      >Delete</a
+                    >
+                  </div>
+                  {% endif %}
+
+                  <span class="text-zinc-500 text-xs">
+                    {{ review.created_at|date:"M d, Y" }}
+                  </span>
+                </div>
+              </div>
+
+              <p
+                class="text-zinc-300 font-['Hanken_Grotesk'] text-sm leading-relaxed whitespace-pre-line mb-3"
+              >
+                {{ review.content }}
+              </p>
+
+              <div class="flex items-center gap-2">
+                <button
+                  type="button"
+                  data-review-id="{{ review.id }}"
+                  class="like-review-btn flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold tracking-wide font-['Hanken_Grotesk'] transition-all focus:outline-none border {% if request.user in review.likes.all %}bg-[#f5c518]/10 border-[#f5c518] text-[#f5c518]{% else %}bg-zinc-900/40 border-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-800{% endif %}"
+                  {%
+                  if
+                  not
+                  user.is_authenticated
+                  %}disabled
+                  title="Log in to agree with reviews"
+                  {%
+                  endif
+                  %}
+                >
+                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
                     <path
-                      d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                      d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
                     />
                   </svg>
-                  {% endfor %}
-                </div>
-              </div>
-
-              <div class="flex items-center gap-4">
-                {% if request.user == review.user %}
-                <div class="flex items-center gap-2 text-xs">
-                  <a
-                    href="{% url 'movies:edit_review' review.id %}"
-                    class="text-zinc-400 hover:text-[#f5c518] transition-colors"
-                    >Edit</a
-                  >
-                  <span class="text-zinc-700">|</span>
-                  <a
-                    href="{% url 'movies:delete_review' review.id %}"
-                    class="text-zinc-400 hover:text-red-400 transition-colors"
-                    >Delete</a
-                  >
-                </div>
-                {% endif %}
-
-                <span class="text-zinc-500 text-xs">
-                  {{ review.created_at|date:"M d, Y" }}
-                </span>
+                  <span class="like-count">{{ review.total_likes }}</span> Agree
+                </button>
               </div>
             </div>
-            <p
-              class="text-zinc-300 font-['Hanken_Grotesk'] text-sm leading-relaxed whitespace-pre-line"
-            >
-              {{ review.content }}
-            </p>
           </div>
           {% empty %}
           <p class="text-zinc-500 text-sm">
