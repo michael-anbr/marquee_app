@@ -114,4 +114,4 @@ STATICFILES_DIRS = [
 
 MEDIA_ROOT = BASE_DIR / "marquee_app" / "media"
 MEDIA_URL = "/media/"
-LOGIN_REDIRECT_URL = "movies:user_profile"
+LOGIN_REDIRECT_URL = "movies:profile"

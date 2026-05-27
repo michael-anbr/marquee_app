@@ -9,7 +9,7 @@ urlpatterns = [
     path("all/", views.all_movies, name="all_movies"),
     path("people/", views.all_people, name="all_people"),
     path("people/<slug:slug>/", views.actor_profile, name="actor_profile"),
-    path("profile/", views.profile_view, name="user_profile"),
+    path("profile/", views.profile_view, name="profile"),
     path("register/", views.register_view, name="register"),
     path(
         "login/",

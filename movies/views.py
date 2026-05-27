@@ -89,7 +89,7 @@ def profile_view(request):
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
-            return redirect("movies:user_profile")
+            return redirect("movies:profile")
     else:
         form = ProfileForm(instance=profile)
 
@@ -107,7 +107,7 @@ def register_view(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect("home")
+            return redirect("movies:profile")
     else:
         form = RegisterForm()
     return render(request, "registration/register.html", {"form": form})
@@ -138,7 +138,11 @@ def rate_movie(request, movie_id):
         data = json.loads(request.body)
         score = int(data.get("score", 0))
 
-        if 1 <= score <= 5:
+        if score == 0:
+            Rating.objects.filter(user=request.user, movie=movie).delete()
+            return JsonResponse({"success": True, "score": 0})
+
+        elif 1 <= score <= 5:
             rating, created = Rating.objects.update_or_create(
                 user=request.user, movie=movie, defaults={"score": score}
             )
@@ -192,7 +196,7 @@ def change_username(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Your username has been updated successfully!")
-            return redirect("movies:user_profile")
+            return redirect("movies:profile")
     else:
         form = ChangeUsernameForm(instance=request.user)
 

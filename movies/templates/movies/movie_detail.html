@@ -172,7 +172,10 @@
               });
 
               star.addEventListener("click", function () {
-                const score = parseInt(this.getAttribute("data-value"));
+                const clickedValue = parseInt(this.getAttribute("data-value"));
+
+                // Toggle Logic: If clicking the current rating, reset it to 0
+                const score = activeRating === clickedValue ? 0 : clickedValue;
 
                 const url = "{% url 'movies:rate_movie' 12345 %}".replace(
                   "12345",
