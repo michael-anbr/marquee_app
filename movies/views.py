@@ -126,7 +126,7 @@ def toggle_watchlist(request, movie_slug):
         in_watchlist = True
 
     if request.headers.get("x-requested-with") == "XMLHttpRequest":
-        return JsonResponse({"in_watchlist": in_watchlist})
+        return JsonResponse({"success": True, "in_watchlist": in_watchlist})
 
     return redirect(request.META.get("HTTP_REFERER", "home"))
 
