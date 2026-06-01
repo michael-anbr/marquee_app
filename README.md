@@ -149,22 +149,15 @@ The interface aims to recreate the feeling of browsing a digital movie marquee, 
 ## 📸 Screenshots
 
 ### Home Page
-
-```text
-screenshots/home.png
-```
+![Home Page](screenshots/home.png)
 
 ### Movie Details
-
-```text
-screenshots/movie-details.png
-```
+![Movie Details](screenshots/movie-details.png)
 
 ### Search Results
+![Search Results](screenshots/search-results.png)
 
-```text
-screenshots/search-results.png
-```
+---
 
 ## 🔮 Future Improvements
 
